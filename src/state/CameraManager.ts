@@ -40,4 +40,35 @@ export class CameraManager {
       paddingTop: fitPadding,
     });
   };
+
+  private rotateCameraToAzimuth = (azimuthAngle: number) => {
+    if (!this._cameraRef) return;
+
+    const target = new THREE.Vector3();
+    const position = new THREE.Vector3();
+
+    this._cameraRef.getTarget(target);
+    this._cameraRef.getPosition(position);
+
+    const offset = position.clone().sub(target);
+    const spherical = new THREE.Spherical().setFromVector3(offset);
+
+    this._cameraRef.rotateTo(azimuthAngle, spherical.phi, true);
+  };
+
+  public viewFront = () => {
+    this.rotateCameraToAzimuth(0);
+  };
+
+  public viewRight = () => {
+    this.rotateCameraToAzimuth(Math.PI / 2);
+  };
+
+  public viewBack = () => {
+    this.rotateCameraToAzimuth(Math.PI);
+  };
+
+  public viewLeft = () => {
+    this.rotateCameraToAzimuth(-Math.PI / 2);
+  };
 }

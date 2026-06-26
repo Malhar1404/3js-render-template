@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Button, Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
 
@@ -8,7 +8,7 @@ import { Viewer3D } from '../Viewer3D/Viewer3D';
 import { NavBar } from './NavBar/NavBar';
 
 export const Viewer = observer(() => {
-  const { designManager } = useMainContext();
+  const { design3DManager, designManager } = useMainContext();
   const { viewManager } = designManager;
 
   const { data: meshInfoJson, loading } = useJsonParser(viewManager.jsonUrl);
@@ -22,8 +22,57 @@ export const Viewer = observer(() => {
     <Box sx={{ bgcolor: 'white', height: '100vh', width: '100%' }}>
       <NavBar />
       <Box
-        sx={{ height: 'calc(100vh - 64px)', marginTop: '64px', width: '100%' }}>
+        sx={{
+          height: 'calc(100vh - 64px)',
+          marginTop: '64px',
+          position: 'relative',
+          width: '100%',
+        }}>
         <Viewer3D />
+        <Box
+          sx={{
+            left: 16,
+            position: 'absolute',
+            top: 16,
+            zIndex: 20,
+          }}>
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
+              flexWrap: 'nowrap',
+              justifyContent: 'flex-start',
+            }}>
+            <Button
+              color="primary"
+              onClick={() => design3DManager.cameraManager.viewFront()}
+              size="small"
+              variant="contained">
+              Front
+            </Button>
+            <Button
+              color="primary"
+              onClick={() => design3DManager.cameraManager.viewLeft()}
+              size="small"
+              variant="contained">
+              Left
+            </Button>
+            <Button
+              color="primary"
+              onClick={() => design3DManager.cameraManager.viewRight()}
+              size="small"
+              variant="contained">
+              Right
+            </Button>
+            <Button
+              color="primary"
+              onClick={() => design3DManager.cameraManager.viewBack()}
+              size="small"
+              variant="contained">
+              Back
+            </Button>
+          </Stack>
+        </Box>
       </Box>
     </Box>
   );

@@ -1,7 +1,6 @@
 import { observer } from 'mobx-react-lite';
 
-import { useMainContext } from '../../hooks/useMainContext';
-import { Camera } from './Camera/Camera.';
+import { Camera } from './Camera/Camera';
 import { Canvas3D } from './Canvas3D/Canvas3D';
 import { Env } from './Env/Env';
 import { GroundPlane } from './GroundPlane/GroundPlane';
@@ -11,9 +10,6 @@ import { MeshCompute } from './MeshCompute/MeshCompute';
 import { PostProcessing } from './PostProcessing/PostProcessing';
 
 export const Viewer3D = observer(() => {
-  const { design3DManager } = useMainContext();
-  const leva = design3DManager.levaManager;
-
   return (
     <>
       <LevaControls />

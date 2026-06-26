@@ -30,7 +30,7 @@ export class LevaManager {
   envRotationY = 1.5;
 
   // Lights
-  ambientIntensity = 4;
+  ambientIntensity = 5;
   dirLightEnabled = false;
   dirLightIntensity = 1;
   dirLightX = 5;
