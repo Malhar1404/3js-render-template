@@ -1,4 +1,6 @@
 import { observer } from 'mobx-react-lite';
+import { useState } from 'react';
+import * as THREE from 'three';
 
 import { Camera } from './Camera/Camera';
 import { Canvas3D } from './Canvas3D/Canvas3D';
@@ -8,8 +10,12 @@ import { LevaControls } from './LevaControls/LevaControls';
 import { Light } from './Light/Light';
 import { MeshCompute } from './MeshCompute/MeshCompute';
 import { PostProcessing } from './PostProcessing/PostProcessing';
+import { SelectionOutlineDemo } from './SelectionOutlineDemo/SelectionOutlineDemo';
 
 export const Viewer3D = observer(() => {
+  const [outlineSelection, setOutlineSelection] =
+    useState<THREE.Object3D | null>(null);
+
   return (
     <>
       <LevaControls />
@@ -18,8 +24,9 @@ export const Viewer3D = observer(() => {
         <Light />
         <Env />
         <MeshCompute />
+        <SelectionOutlineDemo onSelectionChange={setOutlineSelection} />
         <GroundPlane />
-        <PostProcessing />
+        <PostProcessing outlineSelection={outlineSelection} />
       </Canvas3D>
     </>
   );
