@@ -14,5 +14,9 @@ export default defineConfig({
       '@src': resolve(new URL('./src', import.meta.url).pathname),
     },
   },
+  optimizeDeps: {
+    include: ['three', '@react-three/fiber', '@react-three/drei', '@react-three/postprocessing'],
+    exclude: [],
+  },
   server: server,
 });

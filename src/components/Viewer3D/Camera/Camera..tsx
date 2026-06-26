@@ -12,8 +12,7 @@ export const Camera = observer(() => {
       makeDefault
       minPolarAngle={Math.PI / 2}
       maxPolarAngle={Math.PI / 2}
-      minDistance={0.5}
-      maxDistance={2}
+
       ref={(camera) => {
         if (camera) {
           cameraManager.setCameraRef(camera);

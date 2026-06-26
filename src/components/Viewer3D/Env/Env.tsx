@@ -9,27 +9,24 @@ import { useMainContext } from '../../../hooks/useMainContext';
 export const Env = observer(() => {
   const defaultTexture = useLoader(RGBELoader, '/env/studio_small_09_2k.hdr');
   const { design3DManager } = useMainContext();
+  const leva = design3DManager.levaManager;
   const { envManager } = design3DManager;
 
   return (
-    <Environment background={envManager.envVisibility}>
+    <Environment background={leva.envVisible}>
       <color attach="background" args={['black']} />
-      <mesh
-        rotation={[
-          envManager.envRotation.x,
-          envManager.envRotation.y,
-          envManager.envRotation.z,
-        ]}
-        scale={100}>
-        <sphereGeometry />
-        <meshBasicMaterial
-          transparent
-          opacity={envManager.envIntensity}
-          map={envManager.environmentTexture || defaultTexture}
-          side={THREE.BackSide}
-          toneMapped={false}
-        />
-      </mesh>
+      {leva.envVisible && (
+        <mesh rotation={[0, leva.envRotationY, 0]} scale={100}>
+          <sphereGeometry />
+          <meshBasicMaterial
+            transparent
+            opacity={leva.envIntensity}
+            map={envManager.environmentTexture || defaultTexture}
+            side={THREE.BackSide}
+            toneMapped={false}
+          />
+        </mesh>
+      )}
     </Environment>
   );
 });

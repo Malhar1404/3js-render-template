@@ -1,6 +1,5 @@
 import { MeshProps } from '@react-three/fiber';
 import { observer } from 'mobx-react-lite';
-import { useMemo } from 'react';
 import * as THREE from 'three';
 
 export const SingleMesh = observer(
@@ -8,25 +7,20 @@ export const SingleMesh = observer(
     props: MeshProps & {
       ukey: string;
       mainMeshVisible: boolean;
+      overrideMaterial?: THREE.Material;
+      originalMaterial: THREE.Material;
     },
   ) => {
-    const mainMeshVisible = props.mainMeshVisible;
-
-    const material = useMemo(
-      () => props.material || new THREE.MeshStandardMaterial(),
-      [props.material],
-    );
+    const { mainMeshVisible, overrideMaterial, originalMaterial, ukey: _u, ...meshProps } = props;
 
     return (
-      <>
-        {/* Original mesh */}
-        <mesh
-          key={`single-mesh-${props.ukey}`}
-          {...props}
-          visible={mainMeshVisible}
-          material={material}
-        />
-      </>
+      <mesh
+        {...meshProps}
+        visible={mainMeshVisible}
+        castShadow={meshProps.castShadow ?? true}
+        receiveShadow={meshProps.receiveShadow ?? false}
+        material={overrideMaterial ?? originalMaterial}
+      />
     );
   },
 );
