@@ -1,21 +1,38 @@
+import { ContactShadows } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { observer } from 'mobx-react-lite';
 import React from 'react';
 import * as THREE from 'three';
 
+import { useMainContext } from '../../../hooks/useMainContext';
+
 export const Canvas3D: React.FC<{ children?: React.ReactNode }> = observer(
   ({ children }) => {
+    const { design3DManager } = useMainContext();
+    const leva = design3DManager.levaManager;
+
     return (
       <Canvas
         className="canvas-3d"
         frameloop="always"
         shadows
         gl={{
+          stencilBuffer: false,
           toneMapping: THREE.ACESFilmicToneMapping,
           toneMappingExposure: 0.9,
-          stencilBuffer: false,
         }}>
         {children}
+        {leva.contactShadowsEnabled && (
+          <ContactShadows
+            position={[0, leva.contactShadowsPositionY, 0]}
+            opacity={leva.contactShadowsOpacity}
+            scale={leva.contactShadowsScale}
+            blur={leva.contactShadowsBlur}
+            far={leva.contactShadowsFar}
+            resolution={512}
+            frames={Infinity}
+          />
+        )}
       </Canvas>
     );
   },

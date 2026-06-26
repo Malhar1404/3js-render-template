@@ -3,19 +3,19 @@ import { makeAutoObservable } from 'mobx';
 export class LevaManager {
   // Ambient Occlusion (N8AO)
   aoEnabled = true;
-  aoRadius = 0.5;
-  aoIntensity = 2;
-  aoDistanceFalloff = 1;
-  aoScreenSpaceRadius = true;
+  aoRadius = 2.97;
+  aoIntensity = 4.2;
+  aoDistanceFalloff = 2.31;
+  aoScreenSpaceRadius = false;
   aoSamples = 8;
 
   // Contact Shadows
   contactShadowsEnabled = true;
-  contactShadowsOpacity = 0.6;
-  contactShadowsScale = 10;
-  contactShadowsBlur = 1.5;
-  contactShadowsFar = 10;
-  contactShadowsPositionY = -0.01;
+  contactShadowsOpacity = 0.57;
+  contactShadowsScale = 171.6;
+  contactShadowsBlur = 0.5;
+  contactShadowsFar = 2.3;
+  contactShadowsPositionY = -0.09;
 
   // Ground plane
   planeEnabled = false;
@@ -30,7 +30,7 @@ export class LevaManager {
   envRotationY = 1.5;
 
   // Lights
-  ambientIntensity = 1.01;
+  ambientIntensity = 4;
   dirLightEnabled = false;
   dirLightIntensity = 1;
   dirLightX = 5;

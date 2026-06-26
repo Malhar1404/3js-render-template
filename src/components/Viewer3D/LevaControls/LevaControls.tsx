@@ -61,7 +61,7 @@ export const LevaControls = observer(() => {
     contactShadowsScale: {
       value: leva.contactShadowsScale,
       min: 1,
-      max: 50,
+      max: 1000,
       step: 0.5,
       label: 'Scale',
     },
