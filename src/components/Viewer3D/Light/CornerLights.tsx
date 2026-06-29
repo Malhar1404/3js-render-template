@@ -59,6 +59,8 @@ export const CornerLights = observer(({ groupRef }: CornerLightsProps) => {
   const { meshManager } = design3DManager;
   const [layout, setLayout] = useState<CornerLayout | null>(null);
   const lastBoundsKeyRef = useRef('');
+  const boxRef = useRef(new THREE.Box3());
+  const sizeRef = useRef(new THREE.Vector3());
 
   useFrame(() => {
     const group = groupRef.current;
@@ -66,10 +68,10 @@ export const CornerLights = observer(({ groupRef }: CornerLightsProps) => {
 
     group.updateWorldMatrix(true, true);
 
-    const box = new THREE.Box3().setFromObject(group);
+    const box = boxRef.current.setFromObject(group);
     if (box.isEmpty()) return;
 
-    const size = box.getSize(new THREE.Vector3());
+    const size = box.getSize(sizeRef.current);
     const maxDimension = Math.max(size.x, size.y, size.z);
     const nextBounds: ModelBounds = {
       helperSize: Math.max(0.25, maxDimension * 0.06),
@@ -85,12 +87,14 @@ export const CornerLights = observer(({ groupRef }: CornerLightsProps) => {
     setLayout(buildCornerLayout(nextBounds));
   });
 
+  const centerRef = useRef(new THREE.Vector3());
+
   if (!layout) {
     return null;
   }
 
   const bounds = layout.bounds;
-  const center = new THREE.Vector3(
+  const center = centerRef.current.set(
     (bounds.min.x + bounds.max.x) / 2,
     (bounds.min.y + bounds.max.y) / 2,
     (bounds.min.z + bounds.max.z) / 2,

@@ -48,7 +48,7 @@ export const CornerPointLight = observer(
           position={position}
           visible={light.enabled}
           castShadow
-          shadow-mapSize={[2048, 2048]}
+          shadow-mapSize={[512, 512]}
           shadow-bias={-0.0005}
         />
         {lightRef.current && light.enabled && light.helper && (
