@@ -1,22 +1,12 @@
 import { Box, Button, Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
-import { useEffect } from 'react';
 
-import { useJsonParser } from '../../hooks/useJsonParser';
 import { useMainContext } from '../../hooks/useMainContext';
 import { Viewer3D } from '../Viewer3D/Viewer3D';
 import { NavBar } from './NavBar/NavBar';
 
 export const Viewer = observer(() => {
-  const { design3DManager, designManager } = useMainContext();
-  const { viewManager } = designManager;
-
-  const { data: meshInfoJson, loading } = useJsonParser(viewManager.jsonUrl);
-  useEffect(() => {
-    if (meshInfoJson && !loading) {
-      viewManager.setMeshInfoJson(meshInfoJson);
-    }
-  }, [meshInfoJson, viewManager, loading]);
+  const { design3DManager } = useMainContext();
 
   return (
     <Box sx={{ bgcolor: 'white', height: '100vh', width: '100%' }}>

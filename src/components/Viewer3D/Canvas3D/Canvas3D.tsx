@@ -35,7 +35,7 @@ export const Canvas3D: React.FC<{ children?: React.ReactNode }> = observer(
             blur={leva.contactShadowsBlur}
             far={leva.contactShadowsFar}
             resolution={128}
-            frames={30}
+            frames={Infinity}
           />
         )}
       </Canvas>
