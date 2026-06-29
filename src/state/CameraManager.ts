@@ -44,16 +44,19 @@ export class CameraManager {
   private rotateCameraToAzimuth = (azimuthAngle: number) => {
     if (!this._cameraRef) return;
 
-    const target = new THREE.Vector3();
-    const position = new THREE.Vector3();
+    const meshRef = this._libState.design3DManager.meshManager.groupRef;
+    if (!meshRef) return;
 
-    this._cameraRef.getTarget(target);
-    this._cameraRef.getPosition(position);
+    const { boundingBox, size } = Utils3D.getSizeAndCenter(meshRef);
+    const fitPadding = Math.max(Math.max(size.x, size.y, size.z) * 0.2, 0.5);
 
-    const offset = position.clone().sub(target);
-    const spherical = new THREE.Spherical().setFromVector3(offset);
-
-    this._cameraRef.rotateTo(azimuthAngle, spherical.phi, true);
+    this._cameraRef.rotateTo(azimuthAngle, Math.PI / 2, true);
+    this._cameraRef.fitToBox(boundingBox, true, {
+      paddingBottom: fitPadding,
+      paddingLeft: fitPadding,
+      paddingRight: fitPadding,
+      paddingTop: fitPadding,
+    });
   };
 
   public viewFront = () => {

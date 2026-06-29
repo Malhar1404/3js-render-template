@@ -24,7 +24,7 @@ export const Canvas3D: React.FC<{ children?: React.ReactNode }> = observer(
           toneMapping: THREE.ACESFilmicToneMapping,
           toneMappingExposure: 0.9,
         }}
-        shadowMap={{ type: THREE.PCFSoftShadowMap }}
+        shadowMap={{ type: THREE.PCFShadowMap }}
         onCreated={onCreated}>
         {children}
         {leva.contactShadowsEnabled && (
