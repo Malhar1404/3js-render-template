@@ -12,7 +12,7 @@ export const Canvas3D: React.FC<{ children?: React.ReactNode }> = observer(
     const leva = design3DManager.levaManager;
 
     const onCreated = useCallback(({ gl }: { gl: THREE.WebGLRenderer }) => {
-      gl.setClearColor(new THREE.Color(0xe8e8e8), 1);
+      gl.setClearColor(new THREE.Color(0x525252), 1);
     }, []);
 
     return (

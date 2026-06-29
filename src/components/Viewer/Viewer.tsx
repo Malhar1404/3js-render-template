@@ -23,8 +23,7 @@ export const Viewer = observer(() => {
       <NavBar />
       <Box
         sx={{
-          height: 'calc(100vh - 64px)',
-          marginTop: '64px',
+          height: '100vh',
           position: 'relative',
           width: '100%',
         }}>
