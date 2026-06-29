@@ -178,7 +178,7 @@ const CollapsedBtn = ({ onClick }: { onClick: () => void }) => (
 export const CornerLightsPanel = observer(() => {
   const { design3DManager } = useMainContext();
   const leva = design3DManager.levaManager;
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const updateLight = <K extends keyof CornerLightPatch>(
     id: number,

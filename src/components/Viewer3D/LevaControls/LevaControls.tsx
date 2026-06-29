@@ -234,6 +234,7 @@ export const LevaControls = observer(() => {
 
   return (
     <Leva
+      collapsed
       titleBar={{
         drag: true,
         position: { x: 0, y: 70 },
