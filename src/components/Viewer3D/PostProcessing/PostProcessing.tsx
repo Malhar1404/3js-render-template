@@ -17,10 +17,9 @@ export const PostProcessing = observer(
     if (!leva.aoEnabled && selection.length === 0) return null;
 
     return (
-      <EffectComposer autoClear={false} multisampling={4}>
+      <EffectComposer autoClear={false} multisampling={0}>
         {leva.aoEnabled && (
           <N8AO
-            key={`n8ao-${leva.aoSamples}-${leva.aoRadius}-${leva.aoIntensity}`}
             aoRadius={leva.aoRadius}
             intensity={leva.aoIntensity}
             distanceFalloff={leva.aoDistanceFalloff}
