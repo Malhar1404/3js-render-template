@@ -9,7 +9,6 @@ export class LevaManager {
   aoIntensity = 4.2;
   aoDistanceFalloff = 2.31;
   aoScreenSpaceRadius = false;
-  aoSamples = 8;
 
   // Contact Shadows
   contactShadowsEnabled = true;
@@ -97,7 +96,6 @@ export class LevaManager {
         | 'aoIntensity'
         | 'aoDistanceFalloff'
         | 'aoScreenSpaceRadius'
-        | 'aoSamples'
       >
     >,
   ) {
