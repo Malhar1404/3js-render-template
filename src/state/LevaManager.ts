@@ -56,10 +56,10 @@ export class LevaManager {
 
   // Corner point lights (top 4 bbox corners + offset)
   cornerLights: CornerLight[] = [
-    new CornerLight({ id: 1, name: 'Front Left', enabled: false, intensity: 0.5 }),
+    new CornerLight({ id: 1, name: 'Front Left', enabled: true, intensity: 0.8 }),
     new CornerLight({ id: 2, name: 'Front Right', enabled: false, intensity: 0.5 }),
     new CornerLight({ id: 3, name: 'Back Left', enabled: true, intensity: 1.3 }),
-    new CornerLight({ id: 4, name: 'Back Right', enabled: true, intensity: 1 }),
+    new CornerLight({ id: 4, name: 'Back Right', enabled: true, intensity: 0.4 }),
   ];
 
   // Model material adjustments
