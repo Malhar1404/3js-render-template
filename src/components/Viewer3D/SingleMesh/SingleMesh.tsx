@@ -12,13 +12,12 @@ export const SingleMesh = observer(
     },
   ) => {
     const { mainMeshVisible, overrideMaterial, originalMaterial, ukey: _u, ...meshProps } = props;
-
     return (
       <mesh
         {...meshProps}
         visible={mainMeshVisible}
-        castShadow={meshProps.castShadow ?? true}
-        receiveShadow={meshProps.receiveShadow ?? false}
+        castShadow
+        receiveShadow
         material={overrideMaterial ?? originalMaterial}
       />
     );

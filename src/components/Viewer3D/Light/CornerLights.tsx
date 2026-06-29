@@ -89,6 +89,13 @@ export const CornerLights = observer(({ groupRef }: CornerLightsProps) => {
     return null;
   }
 
+  const bounds = layout.bounds;
+  const center = new THREE.Vector3(
+    (bounds.min.x + bounds.max.x) / 2,
+    (bounds.min.y + bounds.max.y) / 2,
+    (bounds.min.z + bounds.max.z) / 2,
+  );
+
   return (
     <>
       {leva.cornerLights.map((light) => {
@@ -99,6 +106,7 @@ export const CornerLights = observer(({ groupRef }: CornerLightsProps) => {
           <CornerPointLight
             key={`corner-${light.id}`}
             basePosition={corner.position}
+            center={center}
             helperSize={layout.bounds.helperSize}
             light={light}
           />

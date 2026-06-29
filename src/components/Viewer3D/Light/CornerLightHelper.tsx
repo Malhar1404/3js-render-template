@@ -4,7 +4,7 @@ import * as THREE from 'three';
 
 type CornerLightHelperProps = {
   helperSize: number;
-  light: THREE.PointLight;
+  light: THREE.DirectionalLight;
 };
 
 export const CornerLightHelper = ({
@@ -12,7 +12,7 @@ export const CornerLightHelper = ({
   helperSize,
 }: CornerLightHelperProps) => {
   const helper = useMemo(
-    () => new THREE.PointLightHelper(light, helperSize, 0xffb84d),
+    () => new THREE.DirectionalLightHelper(light, helperSize, 0xffb84d),
     [helperSize, light],
   );
 

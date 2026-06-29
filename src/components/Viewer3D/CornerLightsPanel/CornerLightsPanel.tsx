@@ -97,17 +97,50 @@ export const CornerLightsPanel = observer(() => {
             Top 4 model corners
           </div>
         </div>
-        <button
-          type="button"
-          onClick={() => setIsOpen(false)}
-          style={{
-            ...inputStyles,
-            cursor: 'pointer',
-            width: 'auto',
-            padding: '8px 12px',
-          }}>
-          Close
-        </button>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button
+            type="button"
+            onClick={() => {
+              const data = leva.cornerLights.map((l) => ({
+                id: l.id,
+                name: l.name,
+                enabled: l.enabled,
+                intensity: l.intensity,
+                offsetX: l.offsetX,
+                offsetY: l.offsetY,
+                offsetZ: l.offsetZ,
+                helper: l.helper,
+              }));
+              const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = 'corner-lights.json';
+              a.click();
+              URL.revokeObjectURL(url);
+            }}
+            style={{
+              ...inputStyles,
+              cursor: 'pointer',
+              width: 'auto',
+              padding: '8px 12px',
+              background: 'rgba(80, 160, 255, 0.18)',
+              border: '1px solid rgba(80, 160, 255, 0.4)',
+            }}>
+            Save JSON
+          </button>
+          <button
+            type="button"
+            onClick={() => setIsOpen(false)}
+            style={{
+              ...inputStyles,
+              cursor: 'pointer',
+              width: 'auto',
+              padding: '8px 12px',
+            }}>
+            Close
+          </button>
+        </div>
       </div>
 
       <div

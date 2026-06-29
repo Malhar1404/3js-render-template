@@ -107,6 +107,17 @@ export const LevaControls = observer(() => {
     envVisible: { label: 'Show Background', value: leva.envVisible },
   });
 
+  // ── Lights ────────────────────────────────────────────────
+  const lights = useControls('Lights', {
+    ambientIntensity: {
+      label: 'Ambient Intensity',
+      max: 20,
+      min: 0,
+      step: 0.1,
+      value: leva.ambientIntensity,
+    },
+  });
+
   // ── Material Override ─────────────────────────────────────
   // Material Override removed
 
@@ -122,6 +133,9 @@ export const LevaControls = observer(() => {
   useEffect(() => {
     leva.setEnv(env);
   }, [env, leva]);
+  useEffect(() => {
+    leva.setLight({ ambientIntensity: lights.ambientIntensity });
+  }, [lights, leva]);
 
   return (
     <Leva

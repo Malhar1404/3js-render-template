@@ -25,12 +25,14 @@ export const Env = observer(() => {
   useEffect(() => {
     scene.environment = texture;
     scene.background = leva.envVisible ? texture : null;
+    scene.environmentIntensity = leva.envIntensity;
 
     return () => {
       scene.environment = null;
       scene.background = null;
+      scene.environmentIntensity = 1;
     };
-  }, [scene, texture, leva.envVisible]);
+  }, [scene, texture, leva.envVisible, leva.envIntensity]);
 
   return null;
 });

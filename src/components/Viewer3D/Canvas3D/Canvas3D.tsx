@@ -20,7 +20,8 @@ export const Canvas3D: React.FC<{ children?: React.ReactNode }> = observer(
           stencilBuffer: false,
           toneMapping: THREE.ACESFilmicToneMapping,
           toneMappingExposure: 0.9,
-        }}>
+        }}
+        shadowMap={{ type: THREE.PCFSoftShadowMap }}>
         {children}
         {leva.contactShadowsEnabled && (
           <ContactShadows
