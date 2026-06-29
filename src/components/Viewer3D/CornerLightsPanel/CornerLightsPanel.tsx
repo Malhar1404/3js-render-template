@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 
 import { useMainContext } from '../../../hooks/useMainContext';
+import { CornerLightPatch } from '../../../state/CornerLight';
 
 const panelStyles = {
   backdropFilter: 'blur(14px)',
@@ -33,7 +34,11 @@ export const CornerLightsPanel = observer(() => {
   const leva = design3DManager.levaManager;
   const [isOpen, setIsOpen] = useState(true);
 
-  const updateLight = (id: number, key: string, value: string | number | boolean) => {
+  const updateLight = <K extends keyof CornerLightPatch>(
+    id: number,
+    key: K,
+    value: NonNullable<CornerLightPatch[K]>,
+  ) => {
     leva.setCornerLight(id, { [key]: value });
   };
 

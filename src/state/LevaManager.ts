@@ -1,5 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 
+import { CornerLight, CornerLightPatch } from './CornerLight';
+
 export class LevaManager {
   // Ambient Occlusion (N8AO)
   aoEnabled = true;
@@ -54,56 +56,11 @@ export class LevaManager {
   private _nextDirLightId = 1;
 
   // Corner point lights (top 4 bbox corners + offset)
-  cornerLights: Array<{
-    id: number;
-    name: string;
-    enabled: boolean;
-    intensity: number;
-    offsetX: number;
-    offsetY: number;
-    offsetZ: number;
-    helper: boolean;
-  }> = [
-    {
-      enabled: true,
-      helper: false,
-      id: 1,
-      intensity: 2,
-      name: 'Front Left',
-      offsetX: 0,
-      offsetY: 0.5,
-      offsetZ: 0,
-    },
-    {
-      enabled: true,
-      helper: false,
-      id: 2,
-      intensity: 2,
-      name: 'Front Right',
-      offsetX: 0,
-      offsetY: 0.5,
-      offsetZ: 0,
-    },
-    {
-      enabled: true,
-      helper: false,
-      id: 3,
-      intensity: 2,
-      name: 'Back Left',
-      offsetX: 0,
-      offsetY: 0.5,
-      offsetZ: 0,
-    },
-    {
-      enabled: true,
-      helper: false,
-      id: 4,
-      intensity: 2,
-      name: 'Back Right',
-      offsetX: 0,
-      offsetY: 0.5,
-      offsetZ: 0,
-    },
+  cornerLights: CornerLight[] = [
+    new CornerLight({ id: 1, name: 'Front Left' }),
+    new CornerLight({ id: 2, name: 'Front Right' }),
+    new CornerLight({ id: 3, name: 'Back Left' }),
+    new CornerLight({ id: 4, name: 'Back Right' }),
   ];
 
   // Material overrides (applied globally to all meshes)
@@ -235,24 +192,10 @@ export class LevaManager {
     this.directionalLights = this.directionalLights.slice();
   }
 
-  setCornerLight(
-    id: number,
-    props: Partial<{
-      enabled: boolean;
-      intensity: number;
-      offsetX: number;
-      offsetY: number;
-      offsetZ: number;
-      helper: boolean;
-    }>,
-  ) {
-    const idx = this.cornerLights.findIndex((l) => l.id === id);
-    if (idx === -1) return;
-    this.cornerLights[idx] = {
-      ...this.cornerLights[idx],
-      ...props,
-    };
-    this.cornerLights = this.cornerLights.slice();
+  setCornerLight(id: number, props: CornerLightPatch) {
+    const light = this.cornerLights.find((l) => l.id === id);
+    if (!light) return;
+    Object.assign(light, props);
   }
 
   setMaterial(

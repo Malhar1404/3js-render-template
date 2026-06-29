@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 
 import { StateManager } from '../state/StateManager';
 
@@ -7,10 +7,10 @@ export const MainContext = React.createContext<StateManager>(
 );
 
 export const MainContextProvider = ({ children }: { children: ReactNode }) => {
+  const [stateManager] = useState(() => new StateManager());
+
   return (
-    <MainContext.Provider value={new StateManager()}>
-      {children}
-    </MainContext.Provider>
+    <MainContext.Provider value={stateManager}>{children}</MainContext.Provider>
   );
 };
 

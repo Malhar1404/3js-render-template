@@ -1,42 +1,52 @@
 import { observer } from 'mobx-react-lite';
-import { useEffect } from 'react';
+import { useLayoutEffect, useRef } from 'react';
+import * as THREE from 'three';
 
 import { useMainContext } from '../../../hooks/useMainContext';
 import { useMeshParser } from '../../../hooks/useMeshParser';
+import { CornerLights } from '../Light/CornerLights';
 import { MeshView } from '../MeshView/MeshView';
 
 export const MeshCompute = observer(() => {
   const { design3DManager, designManager } = useMainContext();
   const { meshManager, cameraManager } = design3DManager;
   const { viewManager } = designManager;
+  const groupRef = useRef<THREE.Group>(null);
 
   const { isLoaded, meshInfo } = useMeshParser(viewManager.glbUrl);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (isLoaded) {
       meshManager.setMeshInfos(meshInfo);
+      return;
     }
+
+    meshManager.setMeshInfos([]);
+    meshManager.clearModelBounds();
   }, [isLoaded, meshInfo, meshManager]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (meshManager.groupRef) {
       cameraManager.focusCameraTo([meshManager.groupRef]);
     }
-  }, [cameraManager, meshManager.groupRef]);
+  }, [cameraManager, meshManager.groupRef, meshManager.meshInfos.length]);
+
+  if (!isLoaded) {
+    return null;
+  }
 
   return (
-    (isLoaded && (
-      <group
-        ref={(ref) => {
-          if (ref) {
-            meshManager.setGroupRef(ref);
-          }
-        }}>
-        {meshManager.meshInfos.map((mesh) => (
-          <MeshView key={mesh.name} meshInfo={mesh} />
-        ))}
-      </group>
-    )) ||
-    null
+    <group
+      ref={(ref) => {
+        groupRef.current = ref;
+        if (ref) {
+          meshManager.setGroupRef(ref);
+        }
+      }}>
+      {meshManager.meshInfos.map((mesh) => (
+        <MeshView key={mesh.name} meshInfo={mesh} />
+      ))}
+      <CornerLights groupRef={groupRef} />
+    </group>
   );
 });
