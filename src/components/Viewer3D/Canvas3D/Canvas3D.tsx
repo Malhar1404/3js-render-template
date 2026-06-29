@@ -8,8 +8,10 @@ import { useMainContext } from '../../../hooks/useMainContext';
 
 export const Canvas3D: React.FC<{ children?: React.ReactNode }> = observer(
   ({ children }) => {
-    const { design3DManager } = useMainContext();
+    const { design3DManager, designManager } = useMainContext();
     const leva = design3DManager.levaManager;
+    const { viewManager } = designManager;
+    const modelLoadKey = viewManager.modelLoadKey;
 
     const onCreated = useCallback(({ gl }: { gl: THREE.WebGLRenderer }) => {
       gl.setClearColor(new THREE.Color(0x525252), 1);
@@ -29,13 +31,14 @@ export const Canvas3D: React.FC<{ children?: React.ReactNode }> = observer(
         {children}
         {leva.contactShadowsEnabled && (
           <ContactShadows
+            key={modelLoadKey}
             position={[0, leva.contactShadowsPositionY, 0]}
             opacity={leva.contactShadowsOpacity}
             scale={leva.contactShadowsScale}
             blur={leva.contactShadowsBlur}
             far={leva.contactShadowsFar}
             resolution={128}
-            frames={Infinity}
+            frames={30}
           />
         )}
       </Canvas>

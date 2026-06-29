@@ -8,6 +8,7 @@ import { CornerLightsPanel } from './CornerLightsPanel/CornerLightsPanel';
 import { Env } from './Env/Env';
 import { LevaControls } from './LevaControls/LevaControls';
 import { Light } from './Light/Light';
+import { Loader } from './Loader/Loader';
 import { MeshCompute } from './MeshCompute/MeshCompute';
 import { PostProcessing } from './PostProcessing/PostProcessing';
 import { SelectionOutlineDemo } from './SelectionOutlineDemo/SelectionOutlineDemo';
@@ -20,6 +21,7 @@ export const Viewer3D = observer(() => {
     <>
       <LevaControls />
       <CornerLightsPanel />
+      <Loader />
       <Canvas3D>
         <Camera />
         <Light />

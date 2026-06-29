@@ -1,18 +1,13 @@
 import { observer } from 'mobx-react-lite';
-
 import * as THREE from 'three';
 
 import { MeshInfo } from '../../../core/MeshInfo';
 import { useClick } from '../../../hooks/useClick';
-import { useMainContext } from '../../../hooks/useMainContext';
 import { Logger } from '../../../utils/Logger';
 import { SingleMesh } from '../SingleMesh/SingleMesh';
 
 export const MeshView = observer(({ meshInfo }: { meshInfo: MeshInfo }) => {
   const mesh = meshInfo.item;
-  const { design3DManager } = useMainContext();
-  const leva = design3DManager.levaManager;
-
   // material override removed; use original materials
 
   const handler = useClick({
