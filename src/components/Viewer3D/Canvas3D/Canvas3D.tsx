@@ -21,7 +21,6 @@ export const Canvas3D: React.FC<{ children?: React.ReactNode }> = observer(
         frameloop="always"
         shadows
         gl={{
-          stencilBuffer: false,
           toneMapping: THREE.ACESFilmicToneMapping,
           toneMappingExposure: 0.9,
         }}
@@ -35,8 +34,8 @@ export const Canvas3D: React.FC<{ children?: React.ReactNode }> = observer(
             scale={leva.contactShadowsScale}
             blur={leva.contactShadowsBlur}
             far={leva.contactShadowsFar}
-            resolution={512}
-            frames={Infinity}
+            resolution={128}
+            frames={30}
           />
         )}
       </Canvas>
