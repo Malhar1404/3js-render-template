@@ -37,6 +37,74 @@ export class LevaManager {
   dirLightY = 5;
   dirLightZ = 5;
   dirLightColor = '#ffffff';
+  // Directional light helper visibility
+  dirLightHelper = false;
+  // Multiple directional lights
+  directionalLights: Array<{
+    id: number;
+    name?: string;
+    enabled: boolean;
+    color: string;
+    intensity: number;
+    x: number;
+    y: number;
+    z: number;
+    helper: boolean;
+  }> = [];
+  private _nextDirLightId = 1;
+
+  // Corner point lights (top 4 bbox corners + offset)
+  cornerLights: Array<{
+    id: number;
+    name: string;
+    enabled: boolean;
+    intensity: number;
+    offsetX: number;
+    offsetY: number;
+    offsetZ: number;
+    helper: boolean;
+  }> = [
+    {
+      enabled: true,
+      helper: false,
+      id: 1,
+      intensity: 2,
+      name: 'Front Left',
+      offsetX: 0,
+      offsetY: 0.5,
+      offsetZ: 0,
+    },
+    {
+      enabled: true,
+      helper: false,
+      id: 2,
+      intensity: 2,
+      name: 'Front Right',
+      offsetX: 0,
+      offsetY: 0.5,
+      offsetZ: 0,
+    },
+    {
+      enabled: true,
+      helper: false,
+      id: 3,
+      intensity: 2,
+      name: 'Back Left',
+      offsetX: 0,
+      offsetY: 0.5,
+      offsetZ: 0,
+    },
+    {
+      enabled: true,
+      helper: false,
+      id: 4,
+      intensity: 2,
+      name: 'Back Right',
+      offsetX: 0,
+      offsetY: 0.5,
+      offsetZ: 0,
+    },
+  ];
 
   // Material overrides (applied globally to all meshes)
   materialOverrideEnabled = false;
@@ -123,6 +191,7 @@ export class LevaManager {
               | 'dirLightY'
               | 'dirLightZ'
               | 'dirLightColor'
+              | 'dirLightHelper'
             >
           >;
         },
@@ -132,6 +201,58 @@ export class LevaManager {
       ...rest,
       ...directional,
     });
+  }
+
+  addDirectionalLight() {
+    const newLight = {
+      color: '#ffffff',
+      enabled: true,
+      helper: false,
+      id: this._nextDirLightId++,
+      intensity: 1,
+      name: '' + this._nextDirLightId,
+      x: 5,
+      y: 5,
+      z: 5,
+    };
+    this.directionalLights.push(newLight);
+    return newLight.id;
+  }
+
+  removeDirectionalLight(id: number) {
+    this.directionalLights = this.directionalLights.filter((l) => l.id !== id);
+  }
+
+  setDirectionalLight(id: number, props: Partial<any>) {
+    const idx = this.directionalLights.findIndex((l) => l.id === id);
+    if (idx === -1) return;
+    // Reassign the element so MobX picks up nested changes reliably
+    this.directionalLights[idx] = {
+      ...this.directionalLights[idx],
+      ...props,
+    };
+    // Force observable array change notification
+    this.directionalLights = this.directionalLights.slice();
+  }
+
+  setCornerLight(
+    id: number,
+    props: Partial<{
+      enabled: boolean;
+      intensity: number;
+      offsetX: number;
+      offsetY: number;
+      offsetZ: number;
+      helper: boolean;
+    }>,
+  ) {
+    const idx = this.cornerLights.findIndex((l) => l.id === id);
+    if (idx === -1) return;
+    this.cornerLights[idx] = {
+      ...this.cornerLights[idx],
+      ...props,
+    };
+    this.cornerLights = this.cornerLights.slice();
   }
 
   setMaterial(
