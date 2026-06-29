@@ -121,6 +121,24 @@ export const LevaControls = observer(() => {
   // ── Material Override ─────────────────────────────────────
   // Material Override removed
 
+  // ── Model Material ───────────────────────────────────────
+  const modelMaterial = useControls('Model Material', {
+    modelMetalness: {
+      label: 'Metalness',
+      max: 1,
+      min: 0,
+      step: 0.01,
+      value: leva.modelMetalness,
+    },
+    modelRoughness: {
+      label: 'Roughness',
+      max: 1,
+      min: 0,
+      step: 0.01,
+      value: leva.modelRoughness,
+    },
+  });
+
   // Ground Plane controls removed
 
   // ── Sync to MobX ──────────────────────────────────────────
@@ -136,6 +154,9 @@ export const LevaControls = observer(() => {
   useEffect(() => {
     leva.setLight({ ambientIntensity: lights.ambientIntensity });
   }, [lights, leva]);
+  useEffect(() => {
+    leva.setMaterial({ modelRoughness: modelMaterial.modelRoughness, modelMetalness: modelMaterial.modelMetalness });
+  }, [modelMaterial, leva]);
 
   return (
     <Leva

@@ -4,7 +4,7 @@ export class CornerLight {
   id: number;
   name: string;
   enabled = true;
-  intensity = 2;
+  intensity = 0.5;
   offsetX = 0;
   offsetY = 0.5;
   offsetZ = 0;

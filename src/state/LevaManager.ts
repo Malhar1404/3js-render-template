@@ -28,11 +28,11 @@ export class LevaManager {
 
   // Environment
   envVisible = false;
-  envIntensity = 1.6;
-  envRotationY = 1.5;
+  envIntensity = 0.81;
+  envRotationY = -2.4;
 
   // Lights
-  ambientIntensity = 5;
+  ambientIntensity = 2.0;
   dirLightEnabled = false;
   dirLightIntensity = 1;
   dirLightX = 5;
@@ -57,11 +57,15 @@ export class LevaManager {
 
   // Corner point lights (top 4 bbox corners + offset)
   cornerLights: CornerLight[] = [
-    new CornerLight({ id: 1, name: 'Front Left' }),
-    new CornerLight({ id: 2, name: 'Front Right' }),
-    new CornerLight({ id: 3, name: 'Back Left' }),
-    new CornerLight({ id: 4, name: 'Back Right' }),
+    new CornerLight({ id: 1, name: 'Front Left', enabled: false, intensity: 0.5 }),
+    new CornerLight({ id: 2, name: 'Front Right', enabled: false, intensity: 0.5 }),
+    new CornerLight({ id: 3, name: 'Back Left', enabled: true, intensity: 1.3 }),
+    new CornerLight({ id: 4, name: 'Back Right', enabled: true, intensity: 1 }),
   ];
+
+  // Model material adjustments
+  modelRoughness = 0.39;
+  modelMetalness = 0.12;
 
   // Material overrides (applied globally to all meshes)
   materialOverrideEnabled = false;
@@ -202,6 +206,8 @@ export class LevaManager {
     props: Partial<
       Pick<
         LevaManager,
+        | 'modelRoughness'
+        | 'modelMetalness'
         | 'materialOverrideEnabled'
         | 'materialType'
         | 'materialColor'

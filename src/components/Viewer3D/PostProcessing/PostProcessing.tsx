@@ -1,6 +1,5 @@
-import { EffectComposer, N8AO, Outline } from '@react-three/postprocessing';
+import { EffectComposer, N8AO } from '@react-three/postprocessing';
 import { observer } from 'mobx-react-lite';
-import { KernelSize } from 'postprocessing';
 import { useMemo } from 'react';
 import * as THREE from 'three';
 
@@ -29,15 +28,6 @@ export const PostProcessing = observer(
             samples={leva.aoSamples}
           />
         )}
-        <Outline
-          blur={false}
-          edgeStrength={10}
-          hiddenEdgeColor={0xff00ff}
-          kernelSize={KernelSize.VERY_SMALL}
-          selection={selection}
-          visibleEdgeColor={0xffffff}
-          xRay
-        />
       </EffectComposer>
     );
   },
