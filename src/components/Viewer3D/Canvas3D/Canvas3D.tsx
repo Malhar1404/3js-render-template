@@ -26,7 +26,7 @@ export const Canvas3D: React.FC<{ children?: React.ReactNode }> = observer(
     return (
       <Canvas
         className="canvas-3d"
-        frameloop="demand"
+        frameloop="always"
         shadows
         gl={{
           toneMapping: THREE.ACESFilmicToneMapping,

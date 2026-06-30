@@ -1,6 +1,6 @@
-import { observer } from 'mobx-react-lite';
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
+import { observer } from 'mobx-react-lite';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 
 import { useMainContext } from '../../../hooks/useMainContext';
