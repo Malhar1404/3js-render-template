@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 
-import { StateManager } from './StateManager';
+import type { StateManager } from './StateManager';
 import { ViewManager } from './ViewManager';
 
 export class DesignManager {

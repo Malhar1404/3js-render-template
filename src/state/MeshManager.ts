@@ -3,7 +3,7 @@ import * as THREE from 'three';
 
 import { MeshInfo } from '../core/MeshInfo';
 import { ModelBounds } from './ModelBounds';
-import { StateManager } from './StateManager';
+import type { StateManager } from './StateManager';
 
 export class MeshManager {
   private _libState: StateManager;

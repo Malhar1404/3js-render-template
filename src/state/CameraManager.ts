@@ -3,7 +3,7 @@ import { makeAutoObservable } from 'mobx';
 import * as THREE from 'three';
 
 import { Utils3D } from '../utils/Utils3D';
-import { StateManager } from './StateManager';
+import type { StateManager } from './StateManager';
 
 export class CameraManager {
   private _libState: StateManager;

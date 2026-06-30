@@ -4,7 +4,7 @@ import { CameraManager } from './CameraManager';
 import { EnvManager } from './EnvManager';
 import { LevaManager } from './LevaManager';
 import { MeshManager } from './MeshManager';
-import { StateManager } from './StateManager';
+import type { StateManager } from './StateManager';
 
 export class Design3DManager {
   private _libState: StateManager;
