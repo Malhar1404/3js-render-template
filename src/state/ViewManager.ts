@@ -16,11 +16,11 @@ export class ViewManager {
   setGlbUrl(glbUrl: string) {
     this.glbUrl = glbUrl;
     this.isModelLoading = true;
+    this.modelLoadKey += 1;
   }
 
   setModelLoaded() {
     this.isModelLoading = false;
-    this.modelLoadKey += 1;
   }
 
   setModelLoading() {

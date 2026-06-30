@@ -22,7 +22,7 @@ export const Canvas3D: React.FC<{ children?: React.ReactNode }> = observer(
     const contactShadowsY = meshManager.contactShadowsY;
 
     const showContactShadows =
-      leva.contactShadowsEnabled && !viewManager.isModelLoading;
+      leva.contactShadowsEnabled && !!meshManager.sceneGroup;
 
     return (
       <Canvas
@@ -44,7 +44,7 @@ export const Canvas3D: React.FC<{ children?: React.ReactNode }> = observer(
             blur={leva.contactShadowsBlur}
             far={leva.contactShadowsFar}
             resolution={128}
-            frames={30}
+            frames={10}
           />
         )}
       </Canvas>

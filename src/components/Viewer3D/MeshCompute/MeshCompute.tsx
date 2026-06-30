@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
 import { useMainContext } from '../../../hooks/useMainContext';
@@ -38,6 +39,7 @@ export const MeshCompute = observer(() => {
 
   const groupRef = useRef<THREE.Group>(null);
   const [scene, setScene] = useState<THREE.Group | null>(null);
+  const frameCountRef = useRef(0);
 
   useEffect(() => {
     let cancelled = false;
@@ -45,6 +47,7 @@ export const MeshCompute = observer(() => {
     setScene(null);
     meshManager.setSceneGroup(null);
     meshManager.clearModelBounds();
+    frameCountRef.current = 0;
 
     if (!viewManager.glbUrl) return;
 
@@ -70,9 +73,18 @@ export const MeshCompute = observer(() => {
     if (groupRef.current) {
       meshManager.setSceneGroup(groupRef.current);
     }
-
-    viewManager.setModelLoaded();
   }, [scene]);
+
+  useFrame(() => {
+    if (scene && viewManager.isModelLoading) {
+      if (frameCountRef.current < 15) {
+        frameCountRef.current++;
+        if (frameCountRef.current === 15) {
+          viewManager.setModelLoaded();
+        }
+      }
+    }
+  });
 
   useEffect(() => {
     if (!scene) return;
