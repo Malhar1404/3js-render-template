@@ -1,34 +1,37 @@
 import { makeAutoObservable } from 'mobx';
 import * as THREE from 'three';
 
-import { MeshInfo } from '../core/MeshInfo';
 import { ModelBounds } from './ModelBounds';
 import type { StateManager } from './StateManager';
 
 export class MeshManager {
   private _libState: StateManager;
-  private _meshInfos: MeshInfo[] = [];
-  private _groupRef: THREE.Group | null = null;
+  /** The root THREE.Group of the currently loaded GLB scene */
+  private _sceneGroup: THREE.Group | null = null;
+  /** Bounding box computed after model loads (used for contact shadows, corner lights) */
   private _modelBounds: ModelBounds | null = null;
+
   constructor(libState: StateManager) {
     this._libState = libState;
     makeAutoObservable(this);
   }
 
-  get meshInfos() {
-    return this._meshInfos;
+  get sceneGroup() {
+    return this._sceneGroup;
   }
 
-  setMeshInfos(meshInfos: MeshInfo[]) {
-    this._meshInfos = meshInfos;
-  }
-
-  setGroupRef(group: THREE.Group) {
-    this._groupRef = group;
-  }
-
+  /** @deprecated use sceneGroup */
   get groupRef() {
-    return this._groupRef;
+    return this._sceneGroup;
+  }
+
+  setSceneGroup(group: THREE.Group | null) {
+    this._sceneGroup = group;
+  }
+
+  /** @deprecated use setSceneGroup */
+  setGroupRef(group: THREE.Group) {
+    this._sceneGroup = group;
   }
 
   get modelBounds() {
@@ -41,5 +44,13 @@ export class MeshManager {
 
   clearModelBounds() {
     this._modelBounds = null;
+  }
+
+  /** The Y position ContactShadows should sit at (bottom of model bbox) */
+  get contactShadowsY(): number {
+    if (this._modelBounds) {
+      return this._modelBounds.min.y;
+    }
+    return -0.09;
   }
 }

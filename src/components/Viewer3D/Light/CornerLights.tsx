@@ -64,7 +64,8 @@ export const CornerLights = observer(({ groupRef }: CornerLightsProps) => {
 
   useFrame(() => {
     const group = groupRef.current;
-    if (!group || meshManager.meshInfos.length === 0) return;
+    // Guard: no group ref means no model is loaded yet
+    if (!group || !meshManager.sceneGroup) return;
 
     group.updateWorldMatrix(true, true);
 

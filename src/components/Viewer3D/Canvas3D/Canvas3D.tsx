@@ -10,11 +10,19 @@ export const Canvas3D: React.FC<{ children?: React.ReactNode }> = observer(
   ({ children }) => {
     const { design3DManager } = useMainContext();
     const leva = design3DManager.levaManager;
+    const { meshManager } = design3DManager;
 
     const onCreated = useCallback(({ gl }: { gl: THREE.WebGLRenderer }) => {
       gl.setClearColor(new THREE.Color(0x525252), 1);
       gl.shadowMap.type = THREE.PCFShadowMap;
     }, []);
+
+    /**
+     * ContactShadows Y is driven by the model's actual bounding box bottom.
+     * Falls back to leva.contactShadowsPositionY (manual override) when no
+     * model bounds are available yet.
+     */
+    const contactShadowsY = meshManager.contactShadowsY;
 
     return (
       <Canvas
@@ -29,7 +37,7 @@ export const Canvas3D: React.FC<{ children?: React.ReactNode }> = observer(
         {children}
         {leva.contactShadowsEnabled && (
           <ContactShadows
-            position={[0, leva.contactShadowsPositionY, 0]}
+            position={[0, contactShadowsY, 0]}
             opacity={leva.contactShadowsOpacity}
             scale={leva.contactShadowsScale}
             blur={leva.contactShadowsBlur}
