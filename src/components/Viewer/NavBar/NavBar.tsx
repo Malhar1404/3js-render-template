@@ -12,7 +12,8 @@ export const NavBar = observer(() => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      if (previousBlobUrlRef.current) URL.revokeObjectURL(previousBlobUrlRef.current);
+      if (previousBlobUrlRef.current)
+        URL.revokeObjectURL(previousBlobUrlRef.current);
       const blobUrl = URL.createObjectURL(file);
       previousBlobUrlRef.current = blobUrl;
       viewManager.setGlbUrl(blobUrl);
@@ -22,12 +23,18 @@ export const NavBar = observer(() => {
 
   return (
     <>
-      <input ref={fileInputRef} type="file" accept=".glb" style={{ display: 'none' }} onChange={handleFileChange} />
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".glb"
+        style={{ display: 'none' }}
+        onChange={handleFileChange}
+      />
       <button
         onClick={() => fileInputRef.current?.click()}
         style={{
-          background: 'rgba(12,14,20,0.88)',
           backdropFilter: 'blur(20px)',
+          background: 'rgba(12,14,20,0.88)',
           border: '1px solid rgba(255,255,255,0.08)',
           borderRadius: '8px',
           color: '#e8edf4',
@@ -38,8 +45,8 @@ export const NavBar = observer(() => {
           padding: '8px 14px',
           position: 'fixed',
           right: '12px',
-          top: '12px',
           textTransform: 'uppercase',
+          top: '12px',
           zIndex: 1300,
         }}>
         Load GLB

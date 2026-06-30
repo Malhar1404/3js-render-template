@@ -13,6 +13,7 @@ export const Canvas3D: React.FC<{ children?: React.ReactNode }> = observer(
 
     const onCreated = useCallback(({ gl }: { gl: THREE.WebGLRenderer }) => {
       gl.setClearColor(new THREE.Color(0x525252), 1);
+      gl.shadowMap.type = THREE.PCFShadowMap;
     }, []);
 
     return (
@@ -24,7 +25,6 @@ export const Canvas3D: React.FC<{ children?: React.ReactNode }> = observer(
           toneMapping: THREE.ACESFilmicToneMapping,
           toneMappingExposure: 0.9,
         }}
-        shadowMap={{ type: THREE.PCFShadowMap }}
         onCreated={onCreated}>
         {children}
         {leva.contactShadowsEnabled && (
