@@ -18,7 +18,6 @@ export const Canvas3D: React.FC<{ children?: React.ReactNode }> = observer(
       gl.shadowMap.type = THREE.PCFShadowMap;
     }, []);
 
-   
     const contactShadowsY = meshManager.contactShadowsY;
 
     const showContactShadows =
@@ -27,7 +26,7 @@ export const Canvas3D: React.FC<{ children?: React.ReactNode }> = observer(
     return (
       <Canvas
         className="canvas-3d"
-        frameloop="always"
+        frameloop="demand"
         shadows
         gl={{
           toneMapping: THREE.ACESFilmicToneMapping,
