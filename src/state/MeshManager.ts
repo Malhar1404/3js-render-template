@@ -6,9 +6,7 @@ import type { StateManager } from './StateManager';
 
 export class MeshManager {
   private _libState: StateManager;
-  /** The root THREE.Group of the currently loaded GLB scene */
   private _sceneGroup: THREE.Group | null = null;
-  /** Bounding box computed after model loads (used for contact shadows, corner lights) */
   private _modelBounds: ModelBounds | null = null;
 
   constructor(libState: StateManager) {
@@ -20,7 +18,6 @@ export class MeshManager {
     return this._sceneGroup;
   }
 
-  /** @deprecated use sceneGroup */
   get groupRef() {
     return this._sceneGroup;
   }
@@ -29,7 +26,6 @@ export class MeshManager {
     this._sceneGroup = group;
   }
 
-  /** @deprecated use setSceneGroup */
   setGroupRef(group: THREE.Group) {
     this._sceneGroup = group;
   }
@@ -46,7 +42,6 @@ export class MeshManager {
     this._modelBounds = null;
   }
 
-  /** The Y position ContactShadows should sit at (bottom of model bbox) */
   get contactShadowsY(): number {
     if (this._modelBounds) {
       return this._modelBounds.min.y;

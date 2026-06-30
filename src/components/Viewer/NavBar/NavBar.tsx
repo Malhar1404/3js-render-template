@@ -7,20 +7,12 @@ export const NavBar = observer(() => {
   const { designManager } = useMainContext();
   const { viewManager } = designManager;
   const fileInputRef = useRef<HTMLInputElement>(null);
-  /**
-   * We keep a ref to the previous blob URL and only revoke it AFTER the new
-   * model finishes loading (handled by a MobX reaction in the effect below).
-   * For now we store it and revoke on the NEXT file pick — safe because by
-   * then the previous model is definitely done with that URL.
-   */
   const previousBlobUrlRef = useRef<string | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    // Revoke the *previous* blob URL now — the previous model has already
-    // finished loading so it's safe to free that memory.
     if (previousBlobUrlRef.current) {
       URL.revokeObjectURL(previousBlobUrlRef.current);
     }
@@ -29,7 +21,6 @@ export const NavBar = observer(() => {
     previousBlobUrlRef.current = blobUrl;
     viewManager.setGlbUrl(blobUrl);
 
-    // Reset input so the same file can be re-selected
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
@@ -45,7 +36,6 @@ export const NavBar = observer(() => {
         onChange={handleFileChange}
       />
 
-      {/* ── Load GLB button ─────────────────────────────────────── */}
       <button
         id="load-glb-btn"
         onClick={() => !isLoading && fileInputRef.current?.click()}
@@ -91,7 +81,6 @@ export const NavBar = observer(() => {
         {isLoading ? 'Loading…' : 'Load GLB'}
       </button>
 
-      {/* ── Full-screen loading overlay ─────────────────────────── */}
       {isLoading && (
         <div
           style={{
@@ -109,7 +98,6 @@ export const NavBar = observer(() => {
             top: 0,
             zIndex: 1200,
           }}>
-          {/* Spinner ring */}
           <div
             style={{
               animation: 'spin 1s linear infinite',
@@ -134,7 +122,6 @@ export const NavBar = observer(() => {
         </div>
       )}
 
-      {/* Keyframe for spinner — injected once as a style tag */}
       <style>{`
         @keyframes spin {
           to { transform: rotate(360deg); }
