@@ -37,6 +37,7 @@ export const Viewer3D = observer(() => {
         position="bottom-right"
         margin={[72, 30]}
         background="transparent"
+        modelOpacity={1}
       />
     </SyncedGizmoProvider>
   );
