@@ -233,5 +233,5 @@ export const LevaControls = () => {
     });
   }, [leva.modelRoughness, leva.modelMetalness, setModelMaterial]);
 
-  return <Leva collapsed titleBar={TITLE_BAR} />;
+  return null;
 };

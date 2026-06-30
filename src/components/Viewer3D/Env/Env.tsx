@@ -21,7 +21,6 @@ export const Env = observer(() => {
     const chosenTexture = envManager.environmentTexture || defaultTexture;
     if (chosenTexture) {
       chosenTexture.mapping = THREE.EquirectangularReflectionMapping;
-      chosenTexture.encoding = THREE.RGBEEncoding;
     }
     return chosenTexture;
   }, [envManager.environmentTexture, defaultTexture]);
