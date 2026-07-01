@@ -4,6 +4,7 @@ import { CameraManager } from './CameraManager';
 import { EnvManager } from './EnvManager';
 import { LevaManager } from './LevaManager';
 import { MeshManager } from './MeshManager';
+import { MeshTreeStore } from './MeshTreeStore';
 import type { StateManager } from './StateManager';
 
 export class Design3DManager {
@@ -12,6 +13,7 @@ export class Design3DManager {
   private _cameraManager: CameraManager;
   private _envManager: EnvManager;
   private _levaManager: LevaManager;
+  private _meshTreeStore: MeshTreeStore;
 
   constructor(libState: StateManager) {
     this._libState = libState;
@@ -19,6 +21,7 @@ export class Design3DManager {
     this._cameraManager = new CameraManager(libState);
     this._envManager = new EnvManager();
     this._levaManager = new LevaManager();
+    this._meshTreeStore = new MeshTreeStore();
     makeAutoObservable(this);
   }
 
@@ -36,5 +39,9 @@ export class Design3DManager {
 
   get levaManager() {
     return this._levaManager;
+  }
+
+  get meshTreeStore() {
+    return this._meshTreeStore;
   }
 }

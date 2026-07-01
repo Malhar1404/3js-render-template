@@ -1,0 +1,17 @@
+/* Custom scrollbar — Tailwind has no built-in scrollbar utilities in v4 */
+.mesh-panel-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.mesh-panel-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.mesh-panel-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+.mesh-panel-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.18);
+}

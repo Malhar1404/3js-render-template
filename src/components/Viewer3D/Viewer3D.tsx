@@ -9,6 +9,7 @@ import { LevaControls } from './LevaControls/LevaControls';
 import { Light } from './Light/Light';
 import { MeshCompute } from './MeshCompute/MeshCompute';
 import { PostProcessing } from './PostProcessing/PostProcessing';
+import { SelectionOutline } from './SelectionOutline/SelectionOutline';
 
 export const Viewer3D = observer(() => {
   return (
@@ -22,6 +23,7 @@ export const Viewer3D = observer(() => {
         <Env />
         <MeshCompute />
         <PostProcessing />
+        <SelectionOutline />
 
         <GizmoHelper renderPriority={2} alignment="bottom-right" margin={[80, 80]}>
           <group scale={1.1}>
