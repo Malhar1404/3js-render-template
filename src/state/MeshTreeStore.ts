@@ -20,18 +20,13 @@ export class MeshTreeStore {
   /** Currently selected node uuid, or null */
   selectedId: string | null = null;
 
-  /** Whether the mesh panel sidebar is open */
-  isPanelOpen: boolean = true;
-
   constructor() {
     makeObservable(this, {
       nodes: observable,
       rootIds: observable,
       selectedId: observable,
-      isPanelOpen: observable,
       selectedNode: computed,
       selectNode: action,
-      togglePanel: action,
       buildFromScene: action,
     });
   }
@@ -47,10 +42,6 @@ export class MeshTreeStore {
 
   selectNode(id: string | null): void {
     this.selectedId = id;
-  }
-
-  togglePanel(): void {
-    this.isPanelOpen = !this.isPanelOpen;
   }
 
   /**

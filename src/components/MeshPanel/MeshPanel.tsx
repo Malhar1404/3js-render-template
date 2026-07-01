@@ -9,8 +9,6 @@ export const MeshPanel = observer(() => {
   const { design3DManager } = useMainContext();
   const { meshTreeStore } = design3DManager;
 
-  if (!meshTreeStore.isPanelOpen) return null;
-
   return (
     <div className="absolute top-0 left-0 w-64 h-full flex flex-col z-10 border-r border-white/[0.07] overflow-hidden"
       style={{ background: 'rgba(15, 17, 23, 0.82)', backdropFilter: 'blur(16px)' }}>
