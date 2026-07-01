@@ -1,8 +1,9 @@
 import { observer } from 'mobx-react-lite';
 
 import { useMainContext } from '../../hooks/useMainContext';
-import { MeshPanelRow } from './MeshPanelRow';
+
 import './MeshPanel.css';
+import { MeshPanelRow } from './MeshPanelRow';
 
 export const MeshPanel = observer(() => {
   const { design3DManager } = useMainContext();

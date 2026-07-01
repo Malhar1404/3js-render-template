@@ -4,16 +4,8 @@ import { observer } from 'mobx-react-lite';
 import { useMainContext } from '../../hooks/useMainContext';
 import { MeshPanel } from '../MeshPanel/MeshPanel';
 import { Viewer3D } from '../Viewer3D/Viewer3D';
+import { LayersIcon } from './icons/ViewerIcons';
 import { NavBar } from './NavBar/NavBar';
-
-// Simple layers icon — no extra icon library needed
-const LayersIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <polygon points="12 2 2 7 12 12 22 7 12 2"/>
-    <polyline points="2 17 12 22 22 17"/>
-    <polyline points="2 12 12 17 22 12"/>
-  </svg>
-);
 
 export const Viewer = observer(() => {
   const { design3DManager } = useMainContext();
@@ -30,10 +22,8 @@ export const Viewer = observer(() => {
         }}>
         <Viewer3D />
 
-        {/* ── Mesh hierarchy panel (left sidebar) ─────────────────── */}
         <MeshPanel />
 
-        {/* ── Top-left toolbar ─────────────────────────────────────── */}
         <Box
           sx={{
             left: meshTreeStore.isPanelOpen ? 276 : 16,
