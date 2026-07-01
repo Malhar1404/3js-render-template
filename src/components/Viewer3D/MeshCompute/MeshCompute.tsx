@@ -1,4 +1,5 @@
 import { useFrame } from '@react-three/fiber';
+import { ThreeEvent } from '@react-three/fiber';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
@@ -34,7 +35,7 @@ function applySceneSettings(
 
 export const MeshCompute = observer(() => {
   const { design3DManager, designManager } = useMainContext();
-  const { meshManager, cameraManager, levaManager } = design3DManager;
+  const { meshManager, cameraManager, levaManager, meshTreeStore } = design3DManager;
   const { viewManager } = designManager;
 
   const groupRef = useRef<THREE.Group>(null);
@@ -73,6 +74,9 @@ export const MeshCompute = observer(() => {
     if (groupRef.current) {
       meshManager.setSceneGroup(groupRef.current);
     }
+
+    // Build the observable node tree from the loaded scene
+    meshTreeStore.buildFromScene(scene);
   }, [scene]);
 
   useFrame(() => {
@@ -99,12 +103,21 @@ export const MeshCompute = observer(() => {
 
   if (!scene) return null;
 
+  const handleMeshClick = (e: ThreeEvent<MouseEvent>): void => {
+    e.stopPropagation();
+    const uuid = e.object.uuid;
+    if (meshTreeStore.nodes.has(uuid)) {
+      meshTreeStore.selectNode(uuid);
+    }
+  };
+
   return (
     <group
       ref={(ref) => {
         (groupRef as React.MutableRefObject<THREE.Group | null>).current = ref;
         if (ref) meshManager.setSceneGroup(ref);
       }}
+      onClick={handleMeshClick}
     >
       <primitive object={scene} />
       <CornerLights groupRef={groupRef} />
