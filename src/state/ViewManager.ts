@@ -7,7 +7,7 @@ export class ViewManager {
   glbUrl = './glbs/OfficeSpace.glb';
   isModelLoading = true;
   modelLoadKey = 0;
-  gizmoUrl = "./glbs/cube.glb";
+  gizmoUrl = './glbs/cube.glb';
 
   constructor(libState: StateManager) {
     this._libState = libState;

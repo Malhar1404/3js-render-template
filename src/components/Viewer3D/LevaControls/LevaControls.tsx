@@ -1,4 +1,4 @@
-import { Leva, useControls } from 'leva';
+import { useControls } from 'leva';
 import { useEffect } from 'react';
 
 import { useMainContext } from '../../../hooks/useMainContext';
@@ -14,134 +14,134 @@ export const LevaControls = () => {
 
   // ── Ambient Occlusion ─────────────────────────────────────
   const [, setAO] = useControls('Ambient Occlusion (N8AO)', () => ({
+    aoDistanceFalloff: {
+      label: 'Distance Falloff',
+      max: 5,
+      min: 0,
+      onChange: (v: number) => {
+        leva.setAO({ aoDistanceFalloff: v });
+      },
+      step: 0.01,
+      value: leva.aoDistanceFalloff,
+    },
     aoEnabled: {
       label: 'Enabled',
-      value: leva.aoEnabled,
       onChange: (v: boolean) => {
         leva.setAO({ aoEnabled: v });
       },
-    },
-    aoRadius: {
-      label: 'Radius',
-      max: 5,
-      min: 0.01,
-      step: 0.01,
-      value: leva.aoRadius,
-      onChange: (v: number) => {
-        leva.setAO({ aoRadius: v });
-      },
+      value: leva.aoEnabled,
     },
     aoIntensity: {
       label: 'Intensity',
       max: 20,
       min: 0,
-      step: 0.1,
-      value: leva.aoIntensity,
       onChange: (v: number) => {
         leva.setAO({ aoIntensity: v });
       },
+      step: 0.1,
+      value: leva.aoIntensity,
     },
-    aoDistanceFalloff: {
-      label: 'Distance Falloff',
+    aoRadius: {
+      label: 'Radius',
       max: 5,
-      min: 0,
-      step: 0.01,
-      value: leva.aoDistanceFalloff,
+      min: 0.01,
       onChange: (v: number) => {
-        leva.setAO({ aoDistanceFalloff: v });
+        leva.setAO({ aoRadius: v });
       },
+      step: 0.01,
+      value: leva.aoRadius,
     },
   }));
 
   // ── Contact Shadows ───────────────────────────────────────
   const [, setShadows] = useControls('Contact Shadows', () => ({
-    contactShadowsEnabled: {
-      label: 'Enabled',
-      value: leva.contactShadowsEnabled,
-      onChange: (v: boolean) => {
-        leva.setContactShadows({ contactShadowsEnabled: v });
-      },
-    },
-    contactShadowsOpacity: {
-      label: 'Opacity',
-      max: 1,
-      min: 0,
-      step: 0.01,
-      value: leva.contactShadowsOpacity,
-      onChange: (v: number) => {
-        leva.setContactShadows({ contactShadowsOpacity: v });
-      },
-    },
-    contactShadowsScale: {
-      label: 'Scale',
-      max: 1000,
-      min: 1,
-      step: 0.5,
-      value: leva.contactShadowsScale,
-      onChange: (v: number) => {
-        leva.setContactShadows({ contactShadowsScale: v });
-      },
-    },
     contactShadowsBlur: {
       label: 'Blur',
       max: 10,
       min: 0,
-      step: 0.1,
-      value: leva.contactShadowsBlur,
       onChange: (v: number) => {
         leva.setContactShadows({ contactShadowsBlur: v });
       },
+      step: 0.1,
+      value: leva.contactShadowsBlur,
+    },
+    contactShadowsEnabled: {
+      label: 'Enabled',
+      onChange: (v: boolean) => {
+        leva.setContactShadows({ contactShadowsEnabled: v });
+      },
+      value: leva.contactShadowsEnabled,
     },
     contactShadowsFar: {
       label: 'Far',
       max: 50,
       min: 0.1,
-      step: 0.1,
-      value: leva.contactShadowsFar,
       onChange: (v: number) => {
         leva.setContactShadows({ contactShadowsFar: v });
       },
+      step: 0.1,
+      value: leva.contactShadowsFar,
+    },
+    contactShadowsOpacity: {
+      label: 'Opacity',
+      max: 1,
+      min: 0,
+      onChange: (v: number) => {
+        leva.setContactShadows({ contactShadowsOpacity: v });
+      },
+      step: 0.01,
+      value: leva.contactShadowsOpacity,
     },
     contactShadowsPositionY: {
       label: 'Position Y',
       max: 2,
       min: -2,
-      step: 0.001,
-      value: leva.contactShadowsPositionY,
       onChange: (v: number) => {
         leva.setContactShadows({ contactShadowsPositionY: v });
       },
+      step: 0.001,
+      value: leva.contactShadowsPositionY,
+    },
+    contactShadowsScale: {
+      label: 'Scale',
+      max: 1000,
+      min: 1,
+      onChange: (v: number) => {
+        leva.setContactShadows({ contactShadowsScale: v });
+      },
+      step: 0.5,
+      value: leva.contactShadowsScale,
     },
   }));
 
   // ── Environment ───────────────────────────────────────────
   const [, setEnv] = useControls('Environment', () => ({
-    envVisible: {
-      label: 'Show Background',
-      value: leva.envVisible,
-      onChange: (v: boolean) => {
-        leva.setEnv({ envVisible: v });
-      },
-    },
     envIntensity: {
       label: 'Intensity',
       max: 5,
       min: 0,
-      step: 0.01,
-      value: leva.envIntensity,
       onChange: (v: number) => {
         leva.setEnv({ envIntensity: v });
       },
+      step: 0.01,
+      value: leva.envIntensity,
     },
     envRotationY: {
       label: 'Rotation Y',
       max: Math.PI,
       min: -Math.PI,
-      step: 0.01,
-      value: leva.envRotationY,
       onChange: (v: number) => {
         leva.setEnv({ envRotationY: v });
       },
+      step: 0.01,
+      value: leva.envRotationY,
+    },
+    envVisible: {
+      label: 'Show Background',
+      onChange: (v: boolean) => {
+        leva.setEnv({ envVisible: v });
+      },
+      value: leva.envVisible,
     },
   }));
 
@@ -151,56 +151,62 @@ export const LevaControls = () => {
       label: 'Ambient Intensity',
       max: 20,
       min: 0,
-      step: 0.1,
-      value: leva.ambientIntensity,
       onChange: (v: number) => {
         leva.setLight({ ambientIntensity: v });
       },
+      step: 0.1,
+      value: leva.ambientIntensity,
     },
   }));
 
   // ── Model Material ───────────────────────────────────────
   const [, setModelMaterial] = useControls('Model Material', () => ({
-    modelRoughness: {
-      label: 'Roughness',
-      max: 1,
-      min: 0,
-      step: 0.01,
-      value: leva.modelRoughness,
-      onChange: (v: number) => {
-        leva.setMaterial({ modelRoughness: v });
-      },
-    },
     modelMetalness: {
       label: 'Metalness',
       max: 1,
       min: 0,
-      step: 0.01,
-      value: leva.modelMetalness,
       onChange: (v: number) => {
         leva.setMaterial({ modelMetalness: v });
       },
+      step: 0.01,
+      value: leva.modelMetalness,
+    },
+    modelRoughness: {
+      label: 'Roughness',
+      max: 1,
+      min: 0,
+      onChange: (v: number) => {
+        leva.setMaterial({ modelRoughness: v });
+      },
+      step: 0.01,
+      value: leva.modelRoughness,
     },
   }));
 
   // Sync back from MobX if values change from external sources (e.g. model loads reset values)
   useEffect(() => {
     setAO({
-      aoEnabled: leva.aoEnabled,
-      aoRadius: leva.aoRadius,
-      aoIntensity: leva.aoIntensity,
       aoDistanceFalloff: leva.aoDistanceFalloff,
+      aoEnabled: leva.aoEnabled,
+      aoIntensity: leva.aoIntensity,
+      aoRadius: leva.aoRadius,
     });
-  }, [leva.aoEnabled, leva.aoRadius, leva.aoIntensity, leva.aoDistanceFalloff, setAO]);
+  }, [
+    leva.aoEnabled,
+    leva.aoRadius,
+    leva.aoIntensity,
+    leva.aoDistanceFalloff,
+    setAO,
+  ]);
 
   useEffect(() => {
     setShadows({
-      contactShadowsEnabled: leva.contactShadowsEnabled,
-      contactShadowsOpacity: leva.contactShadowsOpacity,
-      contactShadowsScale: leva.contactShadowsScale,
       contactShadowsBlur: leva.contactShadowsBlur,
+      contactShadowsEnabled: leva.contactShadowsEnabled,
       contactShadowsFar: leva.contactShadowsFar,
+      contactShadowsOpacity: leva.contactShadowsOpacity,
       contactShadowsPositionY: leva.contactShadowsPositionY,
+      contactShadowsScale: leva.contactShadowsScale,
     });
   }, [
     leva.contactShadowsEnabled,
@@ -214,9 +220,9 @@ export const LevaControls = () => {
 
   useEffect(() => {
     setEnv({
-      envVisible: leva.envVisible,
       envIntensity: leva.envIntensity,
       envRotationY: leva.envRotationY,
+      envVisible: leva.envVisible,
     });
   }, [leva.envVisible, leva.envIntensity, leva.envRotationY, setEnv]);
 
@@ -228,8 +234,8 @@ export const LevaControls = () => {
 
   useEffect(() => {
     setModelMaterial({
-      modelRoughness: leva.modelRoughness,
       modelMetalness: leva.modelMetalness,
+      modelRoughness: leva.modelRoughness,
     });
   }, [leva.modelRoughness, leva.modelMetalness, setModelMaterial]);
 
