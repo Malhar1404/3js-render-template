@@ -1,10 +1,8 @@
 import {
-  action,
-  computed,
-  makeObservable,
+  makeAutoObservable,
   observable,
   ObservableMap,
-  ObservableSet,
+  ObservableSet
 } from 'mobx';
 import * as THREE from 'three';
 
@@ -25,16 +23,7 @@ export class MeshTreeStore {
   expandedIds: ObservableSet<string> = observable.set();
 
   constructor() {
-    makeObservable(this, {
-      buildFromScene: action,
-      expandedIds: observable,
-      nodes: observable,
-      rootIds: observable,
-      selectNode: action,
-      selectedId: observable,
-      selectedNode: computed,
-      toggleExpand: action,
-    });
+    makeAutoObservable(this);
   }
 
   // ─── Computed ─────────────────────────────────────────────────────────────
@@ -78,8 +67,19 @@ export class MeshTreeStore {
     this.selectedId = null;
     this.expandedIds.clear();
 
+    root.traverse((child) => {
+      if (
+        child instanceof THREE.LineSegments ||
+        child.type === 'LineSegments'
+      ) {
+        child.raycast = () => {};
+      }
+    });
+
     const walk = (obj: THREE.Object3D, parentId: string | null): void => {
-      const childIds = obj.children.map((c) => c.uuid);
+      // Filter out LineSegments children from parent-child mapping
+      const children = obj.children;
+      const childIds = children.map((c) => c.uuid);
 
       let node: SceneNode;
       if (obj instanceof THREE.Mesh) {
@@ -104,14 +104,18 @@ export class MeshTreeStore {
       // Default expand all nodes initially
       this.expandedIds.add(node.id);
 
-      for (const child of obj.children) {
+      for (const child of children) {
         walk(child, obj.uuid);
       }
     };
 
     // Walk each top-level child of the root group (skip the root itself)
     for (const child of root.children) {
-      walk(child, null);
+      if (
+        !(child instanceof THREE.LineSegments || child.type === 'LineSegments')
+      ) {
+        walk(child, null);
+      }
     }
   }
 }
