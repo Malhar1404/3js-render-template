@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import { useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { useMainContext } from '../../hooks/useMainContext';
 import { MeshSceneNode } from '../../state/MeshSceneNode';
@@ -21,13 +21,20 @@ export const MeshPanelRow = observer(({ id, depth }: MeshPanelRowProps) => {
   const { meshTreeStore } = design3DManager;
 
   const node = meshTreeStore.nodes.get(id);
-  const [expanded, setExpanded] = useState(true);
+  const expanded = meshTreeStore.expandedIds.has(id);
 
   if (!node) return null;
 
   const isMesh = node instanceof MeshSceneNode;
   const hasChildren = node.childIds.length > 0;
   const isSelected = meshTreeStore.selectedId === id;
+  const rowRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isSelected && rowRef.current) {
+      rowRef.current.scrollIntoView({ behavior: 'auto', block: 'start' });
+    }
+  }, [isSelected]);
 
   const handleRowClick = () => {
     meshTreeStore.selectNode(isSelected ? null : id);
@@ -40,13 +47,14 @@ export const MeshPanelRow = observer(({ id, depth }: MeshPanelRowProps) => {
 
   const handleExpandClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setExpanded((v) => !v);
+    meshTreeStore.toggleExpand(id);
   };
 
   return (
     <div>
       {/* ── Row ────────────────────────────────────────────────── */}
       <div
+        ref={rowRef}
         className={[
           // Base: group for group-hover to work on children
           'group flex items-center h-7 pr-2 cursor-pointer select-none transition-colors duration-100',

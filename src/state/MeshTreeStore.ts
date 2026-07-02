@@ -4,6 +4,7 @@ import {
   makeObservable,
   observable,
   ObservableMap,
+  ObservableSet,
 } from 'mobx';
 import * as THREE from 'three';
 
@@ -20,14 +21,19 @@ export class MeshTreeStore {
   /** Currently selected node uuid, or null */
   selectedId: string | null = null;
 
+  /** Set of node ids that are expanded in the UI */
+  expandedIds: ObservableSet<string> = observable.set();
+
   constructor() {
     makeObservable(this, {
+      buildFromScene: action,
+      expandedIds: observable,
       nodes: observable,
       rootIds: observable,
+      selectNode: action,
       selectedId: observable,
       selectedNode: computed,
-      selectNode: action,
-      buildFromScene: action,
+      toggleExpand: action,
     });
   }
 
@@ -42,6 +48,23 @@ export class MeshTreeStore {
 
   selectNode(id: string | null): void {
     this.selectedId = id;
+
+    // Auto-expand parents when a node is selected
+    if (id) {
+      let current = this.nodes.get(id);
+      while (current && current.parentId) {
+        this.expandedIds.add(current.parentId);
+        current = this.nodes.get(current.parentId);
+      }
+    }
+  }
+
+  toggleExpand(id: string): void {
+    if (this.expandedIds.has(id)) {
+      this.expandedIds.delete(id);
+    } else {
+      this.expandedIds.add(id);
+    }
   }
 
   /**
@@ -53,13 +76,21 @@ export class MeshTreeStore {
     this.nodes.clear();
     this.rootIds = [];
     this.selectedId = null;
+    this.expandedIds.clear();
 
     const walk = (obj: THREE.Object3D, parentId: string | null): void => {
       const childIds = obj.children.map((c) => c.uuid);
 
       let node: SceneNode;
       if (obj instanceof THREE.Mesh) {
-        node = new MeshSceneNode(obj, parentId, childIds);
+        node = new MeshSceneNode(
+          obj as THREE.Mesh<
+            THREE.BufferGeometry,
+            THREE.Material | THREE.Material[]
+          >,
+          parentId,
+          childIds,
+        );
       } else {
         node = new SceneNode(obj, parentId, childIds);
       }
@@ -69,6 +100,9 @@ export class MeshTreeStore {
       if (parentId === null) {
         this.rootIds.push(node.id);
       }
+
+      // Default expand all nodes initially
+      this.expandedIds.add(node.id);
 
       for (const child of obj.children) {
         walk(child, obj.uuid);
