@@ -44,7 +44,7 @@ export class MeshManager {
 
   get contactShadowsY(): number {
     if (this._modelBounds) {
-      return this._modelBounds.min.y;
+      return this._modelBounds.min.y - 0.1;
     }
     return -0.09;
   }
