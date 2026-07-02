@@ -26,8 +26,8 @@ export class SceneNode {
 
     makeObservable(this, {
       isVisible: observable,
-      toggleVisibility: action,
       setVisibility: action,
+      toggleVisibility: action,
     });
   }
 
