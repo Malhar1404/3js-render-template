@@ -12,7 +12,7 @@ export class Utils3D {
     obj: THREE.Object3D,
     parentId: string | null,
     store: {
-      setNode: (id: string, node: any) => void;
+      setNode: (id: string, node: SceneNode) => void;
       addRootId: (id: string) => void;
       addExpandedId: (id: string) => void;
     },

@@ -1,4 +1,4 @@
-import { action, makeObservable, observable } from 'mobx';
+import { makeAutoObservable } from 'mobx';
 import * as THREE from 'three';
 
 export class SceneNode {
@@ -24,11 +24,7 @@ export class SceneNode {
     this.object3D = object3D;
     this.isVisible = object3D.visible;
 
-    makeObservable(this, {
-      isVisible: observable,
-      setVisibility: action,
-      toggleVisibility: action,
-    });
+    makeAutoObservable(this);
   }
 
   toggleVisibility(): void {

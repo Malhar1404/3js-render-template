@@ -1,9 +1,4 @@
-import {
-  makeAutoObservable,
-  observable,
-  ObservableMap,
-  ObservableSet,
-} from 'mobx';
+import { makeAutoObservable } from 'mobx';
 import * as THREE from 'three';
 
 import { Utils3D } from '../utils/Utils3D';
@@ -11,7 +6,7 @@ import { SceneNode } from './SceneNode';
 
 export class MeshTreeStore {
   /** Flat map of all nodes — keyed by THREE object uuid */
-  private _nodes: ObservableMap<string, SceneNode> = observable.map();
+  private _nodes = new Map<string, SceneNode>();
 
   /** Ordered top-level node ids (direct children of the loaded scene root) */
   private _rootIds: string[] = [];
@@ -20,7 +15,7 @@ export class MeshTreeStore {
   private _selectedId: string | null = null;
 
   /** Set of node ids that are expanded in the UI */
-  private _expandedIds: ObservableSet<string> = observable.set();
+  private _expandedIds = new Set<string>();
 
   constructor() {
     makeAutoObservable(this);
@@ -28,7 +23,7 @@ export class MeshTreeStore {
 
   // ─── Getters & Setters ─────────────────────────────────────────────────────
 
-  get nodes(): ObservableMap<string, SceneNode> {
+  get nodes(): Map<string, SceneNode> {
     return this._nodes;
   }
 
@@ -48,11 +43,11 @@ export class MeshTreeStore {
     this._selectedId = val;
   }
 
-  get expandedIds(): ObservableSet<string> {
+  get expandedIds(): Set<string> {
     return this._expandedIds;
   }
 
-  set expandedIds(val: ObservableSet<string>) {
+  set expandedIds(val: Set<string>) {
     this._expandedIds = val;
   }
 
