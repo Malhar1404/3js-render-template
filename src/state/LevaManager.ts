@@ -1,6 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 
-import { CornerLight, CornerLightPatch } from './CornerLight';
+import { CornerLightPatch } from '../types';
+import { CornerLight } from './CornerLight';
 
 export class LevaManager {
   // Ambient Occlusion (N8AO)
@@ -56,10 +57,30 @@ export class LevaManager {
 
   // Corner point lights (top 4 bbox corners + offset)
   cornerLights: CornerLight[] = [
-    new CornerLight({ id: 1, name: 'Front Left', enabled: true, intensity: 0.8 }),
-    new CornerLight({ id: 2, name: 'Front Right', enabled: false, intensity: 0.5 }),
-    new CornerLight({ id: 3, name: 'Back Left', enabled: true, intensity: 1.3 }),
-    new CornerLight({ id: 4, name: 'Back Right', enabled: true, intensity: 0.4 }),
+    new CornerLight({
+      enabled: true,
+      id: 1,
+      intensity: 0.8,
+      name: 'Front Left',
+    }),
+    new CornerLight({
+      enabled: false,
+      id: 2,
+      intensity: 0.5,
+      name: 'Front Right',
+    }),
+    new CornerLight({
+      enabled: true,
+      id: 3,
+      intensity: 1.3,
+      name: 'Back Left',
+    }),
+    new CornerLight({
+      enabled: true,
+      id: 4,
+      intensity: 0.4,
+      name: 'Back Right',
+    }),
   ];
 
   // Model material adjustments

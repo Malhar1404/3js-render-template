@@ -3,6 +3,7 @@ import { Leva } from 'leva';
 import { observer } from 'mobx-react-lite';
 import { SnackbarProvider } from 'notistack';
 
+import { TITLE_BAR } from './constants';
 import { MainContextProvider } from './hooks/useMainContext';
 import { Router } from './router/Router';
 
@@ -14,11 +15,6 @@ const queryClient = new QueryClient({
     },
   },
 });
-
-const TITLE_BAR = {
-  drag: true,
-  position: { x: 0, y: 70 },
-} as const;
 
 export const App = observer(() => {
   return (

@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 
 import { useMainContext } from '../../hooks/useMainContext';
 import { MeshSceneNode } from '../../state/MeshSceneNode';
+import { MeshPanelRowProps } from '../../types';
 import {
   IconChevronRight,
   IconEyeClosed,
@@ -10,11 +11,6 @@ import {
   IconGroup,
   IconMesh,
 } from './icons/MeshPanelIcons';
-
-interface MeshPanelRowProps {
-  id: string;
-  depth: number;
-}
 
 export const MeshPanelRow = observer(({ id, depth }: MeshPanelRowProps) => {
   const { design3DManager } = useMainContext();
@@ -67,8 +63,7 @@ export const MeshPanelRow = observer(({ id, depth }: MeshPanelRowProps) => {
           !node.isVisible ? 'opacity-50' : '',
         ].join(' ')}
         style={{ paddingLeft: `${8 + depth * 16}px` }}
-        onClick={handleRowClick}
-      >
+        onClick={handleRowClick}>
         {/* Expand chevron */}
         <button
           className={[
@@ -77,21 +72,20 @@ export const MeshPanelRow = observer(({ id, depth }: MeshPanelRowProps) => {
             hasChildren ? '' : 'invisible pointer-events-none',
             expanded && hasChildren ? 'rotate-90' : '',
           ].join(' ')}
-          onClick={hasChildren ? handleExpandClick : undefined}
-        >
+          onClick={hasChildren ? handleExpandClick : undefined}>
           <IconChevronRight />
         </button>
 
         {/* Type icon */}
-        <span className={`flex items-center justify-center shrink-0 w-3.5 ml-0.5 ${isMesh ? 'text-sky-400' : 'text-amber-400'}`}>
+        <span
+          className={`flex items-center justify-center shrink-0 w-3.5 ml-0.5 ${isMesh ? 'text-sky-400' : 'text-amber-400'}`}>
           {isMesh ? <IconMesh /> : <IconGroup />}
         </span>
 
         {/* Name */}
         <span
           className="flex-1 min-w-0 mx-1.5 text-[12px] text-[#8b949e] truncate transition-colors duration-100"
-          title={node.name}
-        >
+          title={node.name}>
           {node.name}
         </span>
 
@@ -105,8 +99,7 @@ export const MeshPanelRow = observer(({ id, depth }: MeshPanelRowProps) => {
               : 'opacity-100 text-[#30363d] hover:text-[#c9d1d9] hover:bg-white/[0.08]',
           ].join(' ')}
           onClick={handleEyeClick}
-          title={node.isVisible ? 'Hide' : 'Show'}
-        >
+          title={node.isVisible ? 'Hide' : 'Show'}>
           {node.isVisible ? <IconEyeOpen /> : <IconEyeClosed />}
         </button>
       </div>

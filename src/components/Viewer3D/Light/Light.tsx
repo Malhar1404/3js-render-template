@@ -13,8 +13,12 @@ export const Light = observer(() => {
   const helperRef = useRef<THREE.DirectionalLightHelper | null>(null);
   const { scene } = useThree();
 
-  const directionalLightRefs = useRef(new Map<number, THREE.DirectionalLight>());
-  const directionalHelpers = useRef(new Map<number, THREE.DirectionalLightHelper>());
+  const directionalLightRefs = useRef(
+    new Map<number, THREE.DirectionalLight>(),
+  );
+  const directionalHelpers = useRef(
+    new Map<number, THREE.DirectionalLightHelper>(),
+  );
 
   // Create / show / hide helper based on leva flags and update when position changes
   useEffect(() => {

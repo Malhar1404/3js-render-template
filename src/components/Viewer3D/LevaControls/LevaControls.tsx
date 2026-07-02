@@ -3,11 +3,6 @@ import { useEffect } from 'react';
 
 import { useMainContext } from '../../../hooks/useMainContext';
 
-const TITLE_BAR = {
-  drag: true,
-  position: { x: 0, y: 70 },
-} as const;
-
 export const LevaControls = () => {
   const { design3DManager } = useMainContext();
   const leva = design3DManager.levaManager;

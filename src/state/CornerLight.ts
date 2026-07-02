@@ -31,10 +31,3 @@ export class CornerLight {
     makeAutoObservable(this);
   }
 }
-
-export type CornerLightPatch = Partial<
-  Pick<
-    CornerLight,
-    'enabled' | 'intensity' | 'offsetX' | 'offsetY' | 'offsetZ' | 'helper'
-  >
->;

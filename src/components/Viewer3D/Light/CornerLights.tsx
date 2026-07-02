@@ -1,20 +1,11 @@
 import { useFrame } from '@react-three/fiber';
 import { observer } from 'mobx-react-lite';
-import { RefObject, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import * as THREE from 'three';
 
 import { useMainContext } from '../../../hooks/useMainContext';
-import { ModelBounds } from '../../../state/ModelBounds';
+import { CornerLayout, CornerLightsProps, ModelBounds } from '../../../types';
 import { CornerPointLight } from '../Light/CornerPointLight';
-
-type CornerLightsProps = {
-  groupRef: RefObject<THREE.Group | null>;
-};
-
-type CornerLayout = {
-  bounds: ModelBounds;
-  positions: Array<{ id: number; position: THREE.Vector3 }>;
-};
 
 const buildCornerLayout = (bounds: ModelBounds): CornerLayout => {
   const top = bounds.max.y;

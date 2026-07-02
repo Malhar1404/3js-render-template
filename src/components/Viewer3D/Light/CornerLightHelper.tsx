@@ -2,10 +2,7 @@ import { useFrame } from '@react-three/fiber';
 import { useEffect, useMemo } from 'react';
 import * as THREE from 'three';
 
-type CornerLightHelperProps = {
-  helperSize: number;
-  light: THREE.DirectionalLight;
-};
+import { CornerLightHelperProps } from '../../../types';
 
 export const CornerLightHelper = ({
   light,

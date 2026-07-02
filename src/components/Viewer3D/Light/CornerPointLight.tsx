@@ -1,17 +1,11 @@
-import { useEffect, useRef } from 'react';
 import { useThree } from '@react-three/fiber';
 import { observer } from 'mobx-react-lite';
+import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
 import { CornerLight } from '../../../state/CornerLight';
+import { CornerPointLightProps } from '../../../types';
 import { CornerLightHelper } from './CornerLightHelper';
-
-type CornerPointLightProps = {
-  basePosition: THREE.Vector3;
-  center: THREE.Vector3;
-  helperSize: number;
-  light: CornerLight;
-};
 
 export const CornerPointLight = observer(
   ({ light, basePosition, center, helperSize }: CornerPointLightProps) => {
@@ -29,7 +23,9 @@ export const CornerPointLight = observer(
       const dl = lightRef.current;
       if (!dl) return;
       scene.add(dl.target);
-      return () => { scene.remove(dl.target); };
+      return () => {
+        scene.remove(dl.target);
+      };
     }, [scene]);
 
     useEffect(() => {

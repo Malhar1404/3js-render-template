@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import * as THREE from 'three';
 
-import { ModelBounds } from './ModelBounds';
+import { ModelBounds } from '../types';
 import type { StateManager } from './StateManager';
 
 export class MeshManager {
