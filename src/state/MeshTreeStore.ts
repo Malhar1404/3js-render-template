@@ -2,7 +2,7 @@ import {
   makeAutoObservable,
   observable,
   ObservableMap,
-  ObservableSet
+  ObservableSet,
 } from 'mobx';
 import * as THREE from 'three';
 

@@ -1,8 +1,8 @@
+import './MeshPanel.css';
+
 import { observer } from 'mobx-react-lite';
 
 import { useMainContext } from '../../hooks/useMainContext';
-
-import './MeshPanel.css';
 import { MeshPanelRow } from './MeshPanelRow';
 
 export const MeshPanel = observer(() => {
@@ -10,9 +10,12 @@ export const MeshPanel = observer(() => {
   const { meshTreeStore } = design3DManager;
 
   return (
-    <div className="absolute top-0 left-0 w-64 h-full flex flex-col z-10 border-r border-white/[0.07] overflow-hidden"
-      style={{ background: 'rgba(15, 17, 23, 0.82)', backdropFilter: 'blur(16px)' }}>
-
+    <div
+      className="absolute top-0 left-0 w-64 h-full flex flex-col z-10 border-r border-white/[0.07] overflow-hidden"
+      style={{
+        backdropFilter: 'blur(16px)',
+        background: 'rgba(15, 17, 23, 0.82)',
+      }}>
       {/* Header */}
       <div className="flex items-center justify-between px-3.5 py-3 border-b border-white/[0.07] shrink-0">
         <span className="text-[11px] font-semibold tracking-widest uppercase text-[#8b949e]">

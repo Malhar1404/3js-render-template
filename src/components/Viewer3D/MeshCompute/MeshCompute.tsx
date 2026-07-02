@@ -35,7 +35,8 @@ function applySceneSettings(
 
 export const MeshCompute = observer(() => {
   const { design3DManager, designManager } = useMainContext();
-  const { meshManager, cameraManager, levaManager, meshTreeStore } = design3DManager;
+  const { meshManager, cameraManager, levaManager, meshTreeStore } =
+    design3DManager;
   const { viewManager } = designManager;
 
   const groupRef = useRef<THREE.Group>(null);
@@ -52,14 +53,16 @@ export const MeshCompute = observer(() => {
 
     if (!viewManager.glbUrl) return;
 
-    Utils3D.loadGLTF(viewManager.glbUrl).then((loadedScene) => {
-      if (cancelled) return;
-      setScene(loadedScene);
-    }).catch(() => {
-      if (cancelled) return;
-      setScene(null);
-      viewManager.setModelLoaded();
-    });
+    Utils3D.loadGLTF(viewManager.glbUrl)
+      .then((loadedScene) => {
+        if (cancelled) return;
+        setScene(loadedScene);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setScene(null);
+        viewManager.setModelLoaded();
+      });
 
     return () => {
       cancelled = true;
@@ -69,7 +72,11 @@ export const MeshCompute = observer(() => {
   useLayoutEffect(() => {
     if (!scene) return;
 
-    applySceneSettings(scene, levaManager.modelRoughness, levaManager.modelMetalness);
+    applySceneSettings(
+      scene,
+      levaManager.modelRoughness,
+      levaManager.modelMetalness,
+    );
 
     if (groupRef.current) {
       meshManager.setSceneGroup(groupRef.current);
@@ -92,7 +99,11 @@ export const MeshCompute = observer(() => {
 
   useEffect(() => {
     if (!scene) return;
-    applySceneSettings(scene, levaManager.modelRoughness, levaManager.modelMetalness);
+    applySceneSettings(
+      scene,
+      levaManager.modelRoughness,
+      levaManager.modelMetalness,
+    );
   }, [scene, levaManager.modelRoughness, levaManager.modelMetalness]);
 
   useLayoutEffect(() => {
@@ -117,8 +128,7 @@ export const MeshCompute = observer(() => {
         (groupRef as React.MutableRefObject<THREE.Group | null>).current = ref;
         if (ref) meshManager.setSceneGroup(ref);
       }}
-      onClick={handleMeshClick}
-    >
+      onClick={handleMeshClick}>
       <primitive object={scene} />
       <CornerLights groupRef={groupRef} />
     </group>

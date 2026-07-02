@@ -27,4 +27,3 @@ export class ViewManager {
     this.isModelLoading = true;
   }
 }
-

@@ -43,9 +43,7 @@ export const NavBar = observer(() => {
         style={{
           alignItems: 'center',
           backdropFilter: 'blur(20px)',
-          background: isLoading
-            ? 'rgba(12,14,20,0.55)'
-            : 'rgba(12,14,20,0.88)',
+          background: isLoading ? 'rgba(12,14,20,0.55)' : 'rgba(12,14,20,0.88)',
           border: isLoading
             ? '1px solid rgba(255,255,255,0.04)'
             : '1px solid rgba(255,255,255,0.08)',
@@ -85,8 +83,8 @@ export const NavBar = observer(() => {
         <div
           style={{
             alignItems: 'center',
-            background: 'rgba(10,12,18,0.72)',
             backdropFilter: 'blur(6px)',
+            background: 'rgba(10,12,18,0.72)',
             bottom: 0,
             display: 'flex',
             flexDirection: 'column',
@@ -122,11 +120,13 @@ export const NavBar = observer(() => {
         </div>
       )}
 
-      <style>{`
+      <style>
+        {`
         @keyframes spin {
           to { transform: rotate(360deg); }
         }
-      `}</style>
+      `}
+      </style>
     </>
   );
 });
