@@ -46,7 +46,7 @@ export class EnvManager {
     return this._environmentTexture;
   }
 
-  setEnvironmentTexture(texture: THREE.Texture) {
+  setEnvironmentTexture(texture: THREE.Texture | null) {
     this._environmentTexture = texture;
   }
 
@@ -61,10 +61,10 @@ export class EnvManager {
 
   clearMap = (mapType: string) => {
     if (mapType === 'envMap') {
-      this._envVisibility = false;
-      this._envIntensity = 1.6;
-      this._envRotation = { x: 0, y: 0, z: 1.5 };
-      this._environmentTexture = null;
+      this.setEnvVisibility(false);
+      this.setEnvIntensity(1.6);
+      this.setEnvRotation({ x: 0, y: 0, z: 1.5 });
+      this.setEnvironmentTexture(null);
     }
   };
 }

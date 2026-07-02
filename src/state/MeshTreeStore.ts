@@ -6,24 +6,54 @@ import {
 } from 'mobx';
 import * as THREE from 'three';
 
-import { MeshSceneNode } from './MeshSceneNode';
+import { Utils3D } from '../utils/Utils3D';
 import { SceneNode } from './SceneNode';
 
 export class MeshTreeStore {
   /** Flat map of all nodes — keyed by THREE object uuid */
-  nodes: ObservableMap<string, SceneNode> = observable.map();
+  private _nodes: ObservableMap<string, SceneNode> = observable.map();
 
   /** Ordered top-level node ids (direct children of the loaded scene root) */
-  rootIds: string[] = [];
+  private _rootIds: string[] = [];
 
   /** Currently selected node uuid, or null */
-  selectedId: string | null = null;
+  private _selectedId: string | null = null;
 
   /** Set of node ids that are expanded in the UI */
-  expandedIds: ObservableSet<string> = observable.set();
+  private _expandedIds: ObservableSet<string> = observable.set();
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  // ─── Getters & Setters ─────────────────────────────────────────────────────
+
+  get nodes(): ObservableMap<string, SceneNode> {
+    return this._nodes;
+  }
+
+  get rootIds(): string[] {
+    return this._rootIds;
+  }
+
+  set rootIds(val: string[]) {
+    this._rootIds = val;
+  }
+
+  get selectedId(): string | null {
+    return this._selectedId;
+  }
+
+  set selectedId(val: string | null) {
+    this._selectedId = val;
+  }
+
+  get expandedIds(): ObservableSet<string> {
+    return this._expandedIds;
+  }
+
+  set expandedIds(val: ObservableSet<string>) {
+    this._expandedIds = val;
   }
 
   // ─── Computed ─────────────────────────────────────────────────────────────
@@ -31,6 +61,36 @@ export class MeshTreeStore {
   get selectedNode(): SceneNode | null {
     if (!this.selectedId) return null;
     return this.nodes.get(this.selectedId) ?? null;
+  }
+
+  // ─── Setters/Mutators (Actions) ──────────────────────────────────────────
+
+  setNode(id: string, node: SceneNode): void {
+    this._nodes.set(id, node);
+  }
+
+  clearNodes(): void {
+    this._nodes.clear();
+  }
+
+  addRootId(id: string): void {
+    this.rootIds = [...this.rootIds, id];
+  }
+
+  clearRootIds(): void {
+    this.rootIds = [];
+  }
+
+  addExpandedId(id: string): void {
+    this._expandedIds.add(id);
+  }
+
+  removeExpandedId(id: string): void {
+    this._expandedIds.delete(id);
+  }
+
+  clearExpandedIds(): void {
+    this._expandedIds.clear();
   }
 
   // ─── Actions ─────────────────────────────────────────────────────────────
@@ -42,7 +102,7 @@ export class MeshTreeStore {
     if (id) {
       let current = this.nodes.get(id);
       while (current && current.parentId) {
-        this.expandedIds.add(current.parentId);
+        this.addExpandedId(current.parentId);
         current = this.nodes.get(current.parentId);
       }
     }
@@ -50,9 +110,9 @@ export class MeshTreeStore {
 
   toggleExpand(id: string): void {
     if (this.expandedIds.has(id)) {
-      this.expandedIds.delete(id);
+      this.removeExpandedId(id);
     } else {
-      this.expandedIds.add(id);
+      this.addExpandedId(id);
     }
   }
 
@@ -62,10 +122,10 @@ export class MeshTreeStore {
    * Called once after each GLB load completes.
    */
   buildFromScene(root: THREE.Object3D): void {
-    this.nodes.clear();
-    this.rootIds = [];
+    this.clearNodes();
+    this.clearRootIds();
     this.selectedId = null;
-    this.expandedIds.clear();
+    this.clearExpandedIds();
 
     root.traverse((child) => {
       if (
@@ -76,45 +136,12 @@ export class MeshTreeStore {
       }
     });
 
-    const walk = (obj: THREE.Object3D, parentId: string | null): void => {
-      // Filter out LineSegments children from parent-child mapping
-      const children = obj.children;
-      const childIds = children.map((c) => c.uuid);
-
-      let node: SceneNode;
-      if (obj instanceof THREE.Mesh) {
-        node = new MeshSceneNode(
-          obj as THREE.Mesh<
-            THREE.BufferGeometry,
-            THREE.Material | THREE.Material[]
-          >,
-          parentId,
-          childIds,
-        );
-      } else {
-        node = new SceneNode(obj, parentId, childIds);
-      }
-
-      this.nodes.set(node.id, node);
-
-      if (parentId === null) {
-        this.rootIds.push(node.id);
-      }
-
-      // Default expand all nodes initially
-      this.expandedIds.add(node.id);
-
-      for (const child of children) {
-        walk(child, obj.uuid);
-      }
-    };
-
     // Walk each top-level child of the root group (skip the root itself)
     for (const child of root.children) {
       if (
         !(child instanceof THREE.LineSegments || child.type === 'LineSegments')
       ) {
-        walk(child, null);
+        Utils3D.walkScene(child, null, this);
       }
     }
   }

@@ -3,9 +3,52 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { LUTCubeLoader } from 'three/examples/jsm/loaders/LUTCubeLoader';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
 
+import { MeshSceneNode } from '../state/MeshSceneNode';
+import { SceneNode } from '../state/SceneNode';
 import { Logger } from './Logger';
 
 export class Utils3D {
+  static walkScene = (
+    obj: THREE.Object3D,
+    parentId: string | null,
+    store: {
+      setNode: (id: string, node: any) => void;
+      addRootId: (id: string) => void;
+      addExpandedId: (id: string) => void;
+    },
+  ): void => {
+    // Filter out LineSegments children from parent-child mapping
+    const children = obj.children;
+    const childIds = children.map((c) => c.uuid);
+
+    let node: SceneNode;
+    if (obj instanceof THREE.Mesh) {
+      node = new MeshSceneNode(
+        obj as THREE.Mesh<
+          THREE.BufferGeometry,
+          THREE.Material | THREE.Material[]
+        >,
+        parentId,
+        childIds,
+      );
+    } else {
+      node = new SceneNode(obj, parentId, childIds);
+    }
+
+    store.setNode(node.id, node);
+
+    if (parentId === null) {
+      store.addRootId(node.id);
+    }
+
+    // Default expand all nodes initially
+    store.addExpandedId(node.id);
+
+    for (const child of children) {
+      Utils3D.walkScene(child, obj.uuid, store);
+    }
+  };
+
   static gltfLoader = new GLTFLoader();
   static loadGLTF = (url: string) => {
     return new Promise<THREE.Group>((resolve, reject) => {
@@ -100,68 +143,7 @@ export class Utils3D {
 
     return boundingBox;
   };
-  static getCenterPointAndNormal = (mesh: THREE.Mesh) => {
-    const geometry = mesh.geometry;
-    const positions = geometry.attributes.position;
-    const normals = geometry.attributes.normal;
-    const uvs = geometry.attributes.uv as THREE.BufferAttribute;
-    const matrixWorld = mesh.matrixWorld;
 
-    if (!positions || !normals || !uvs) {
-      // find center of the bounding box
-      const boundingBox = Utils3D.getBoundingBox([mesh]);
-      const center = boundingBox.getCenter(new THREE.Vector3());
-      return {
-        center,
-        normal: new THREE.Vector3(0, 0, 1),
-        uv: new THREE.Vector2(0.5, 0.5),
-      };
-    }
-
-    const center = new THREE.Vector3(0, 0, 0);
-    const count = positions.count;
-
-    // Calculate the center in 3D space
-    for (let i = 0; i < count; i++) {
-      const vertex = new THREE.Vector3()
-        .fromBufferAttribute(positions, i)
-        .applyMatrix4(matrixWorld);
-      center.add(vertex);
-    }
-    center.divideScalar(count);
-
-    // Find the closest vertex to the center
-    let closestDistance = Infinity;
-    let closestIndex = 0;
-
-    for (let i = 0; i < count; i++) {
-      const vertex = new THREE.Vector3()
-        .fromBufferAttribute(positions, i)
-        .applyMatrix4(matrixWorld);
-      const distance = vertex.distanceTo(center);
-
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        closestIndex = i;
-      }
-    }
-
-    const normal = new THREE.Vector3()
-      .fromBufferAttribute(normals, closestIndex)
-      .applyMatrix4(matrixWorld);
-
-    const position = new THREE.Vector3()
-      .fromBufferAttribute(positions, closestIndex)
-      .applyMatrix4(matrixWorld);
-
-    const uv = new THREE.Vector2().fromBufferAttribute(uvs, closestIndex);
-
-    return {
-      center: position,
-      normal,
-      uv,
-    };
-  };
   static getSizeAndCenter = (obj: THREE.Object3D) => {
     const boundingBox = Utils3D.getBoundingBox([obj]);
     const size = boundingBox.getSize(new THREE.Vector3());
