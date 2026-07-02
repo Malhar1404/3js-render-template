@@ -25,13 +25,16 @@ export const Viewer3D = observer(() => {
         <PostProcessing />
         <SelectionOutline />
 
-        <GizmoHelper renderPriority={2} alignment="bottom-right" margin={[80, 80]}>
+        <GizmoHelper
+          renderPriority={2}
+          alignment="bottom-right"
+          margin={[80, 80]}>
           <group scale={1.1}>
             <GizmoViewcube
-              color="#2a2d35"
-              hoverColor="#3f4350"
-              textColor="#e8edf4"
-              strokeColor="#555a66"
+              color="#374151"
+              hoverColor="#38bdf8"
+              textColor="#f3f4f6"
+              strokeColor="#38bdf8"
             />
           </group>
         </GizmoHelper>
