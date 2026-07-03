@@ -9,13 +9,12 @@ import { useMainContext } from '../../../hooks/useMainContext';
 export const Env = observer(() => {
   const defaultTexture = useLoader(RGBELoader, '/env/pretoria_gardens_1k.hdr');
   const { design3DManager } = useMainContext();
-  const leva = design3DManager.levaManager;
   const { envManager } = design3DManager;
   const { scene } = useThree();
 
-  const envVisible = leva.envVisible;
-  const envIntensity = leva.envIntensity;
-  const envRotationY = leva.envRotationY;
+  const envVisible = false;
+  const envIntensity = 0.81;
+  const envRotationY = -2.4;
 
   const texture = useMemo(() => {
     const chosenTexture = envManager.environmentTexture || defaultTexture;

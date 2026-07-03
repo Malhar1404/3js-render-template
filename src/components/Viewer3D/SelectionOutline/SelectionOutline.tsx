@@ -16,19 +16,6 @@ export const SelectionOutline = observer(() => {
 
   const outlineRef = useRef<THREE.Mesh>(null);
 
-  // useFrame(() => {
-  //   if (!outlineRef.current) return;
-  //   if (!selectedNode || !(selectedNode instanceof MeshSceneNode)) return;
-
-  //   const sourceMesh = selectedNode.object3D;
-
-  //   // Ensure the world matrix of the source mesh is current
-  //   sourceMesh.updateWorldMatrix(true, false);
-
-  //   // Copy world matrix to our outline mesh so it sits exactly over the source
-  //   outlineRef.current.matrix.copy(sourceMesh.matrixWorld);
-  // });
-
   // Only render if something is selected AND it is actually a mesh (not a group)
   if (!selectedNode || !(selectedNode instanceof MeshSceneNode)) return null;
 
@@ -38,6 +25,7 @@ export const SelectionOutline = observer(() => {
       geometry={selectedNode.object3D.geometry}
       // matrixAutoUpdate=false means R3F won't overwrite our matrix each frame
       matrixAutoUpdate={false}
+      raycast={()=>{}}
     >
       <meshBasicMaterial
         color="#38bdf8"

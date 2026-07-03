@@ -1,4 +1,4 @@
-import { useFrame, ThreeEvent } from '@react-three/fiber';
+import { ThreeEvent, useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 
@@ -32,8 +32,7 @@ function applySceneSettings(
 
 export function useMeshCompute() {
   const { design3DManager, designManager } = useMainContext();
-  const { meshManager, cameraManager, levaManager, meshTreeStore } =
-    design3DManager;
+  const { meshManager, cameraManager, meshTreeStore } = design3DManager;
   const { viewManager } = designManager;
 
   const groupRef = useRef<THREE.Group>(null);
@@ -71,11 +70,8 @@ export function useMeshCompute() {
   useLayoutEffect(() => {
     if (!scene) return;
 
-    applySceneSettings(
-      scene,
-      levaManager.modelRoughness,
-      levaManager.modelMetalness,
-    );
+    // Hardcoded model settings: roughness = 0.39, metalness = 0.12
+    applySceneSettings(scene, 0.39, 0.12);
 
     if (groupRef.current) {
       meshManager.setSceneGroup(groupRef.current);
@@ -83,19 +79,9 @@ export function useMeshCompute() {
 
     // Build the observable node tree from the loaded scene
     meshTreeStore.buildFromScene(scene);
-  }, [scene, levaManager.modelRoughness, levaManager.modelMetalness, meshManager, meshTreeStore]);
+  }, [scene, meshManager, meshTreeStore]);
 
-  // 3. React to roughness or metalness changes
-  useEffect(() => {
-    if (!scene) return;
-    applySceneSettings(
-      scene,
-      levaManager.modelRoughness,
-      levaManager.modelMetalness,
-    );
-  }, [scene, levaManager.modelRoughness, levaManager.modelMetalness]);
-
-  // 4. Render-loop frame counter for loading complete transition
+  // 3. Render-loop frame counter for loading complete transition
   useFrame(() => {
     if (scene && viewManager.isModelLoading) {
       if (frameCountRef.current < 15) {
@@ -107,19 +93,100 @@ export function useMeshCompute() {
     }
   });
 
-  // 5. Focus camera to scene group when it is set
+  // 4. Focus camera to scene group when it is set
   useLayoutEffect(() => {
     if (meshManager.sceneGroup) {
       cameraManager.focusCameraTo([meshManager.sceneGroup]);
     }
   }, [cameraManager, meshManager.sceneGroup]);
 
+  // 5. Canvas click/double-click and drag detection
+  const { gl, camera } = useThree();
+
+  useEffect(() => {
+    const dom = gl.domElement;
+    let downX = 0;
+    let downY = 0;
+
+    const handlePointerDown = (e: PointerEvent) => {
+      downX = e.clientX;
+      downY = e.clientY;
+    };
+
+    const handleNativeClick = (e: MouseEvent) => {
+      const dist = Math.hypot(e.clientX - downX, e.clientY - downY);
+      if (dist > 5) return; // User dragged (e.g. rotated camera)
+
+      const rect = dom.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      const y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+      const raycaster = new THREE.Raycaster();
+      raycaster.setFromCamera(new THREE.Vector2(x, y), camera);
+
+      if (meshManager.sceneGroup) {
+        const intersects = raycaster.intersectObjects(meshManager.sceneGroup.children, true);
+        const hitMesh = intersects.find(
+          (intersect) =>
+            intersect.object instanceof THREE.Mesh &&
+            intersect.object.type !== 'LineSegments'
+        );
+        if (hitMesh) return; // Clicked a mesh, let handleMeshClick handle it
+      }
+
+      // Single click on empty canvas -> deselect mesh
+      meshTreeStore.selectNode(null);
+    };
+
+    const handleNativeDblClick = (e: MouseEvent) => {
+      const dist = Math.hypot(e.clientX - downX, e.clientY - downY);
+      if (dist > 5) return; // User dragged
+
+      const rect = dom.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      const y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+      const raycaster = new THREE.Raycaster();
+      raycaster.setFromCamera(new THREE.Vector2(x, y), camera);
+
+      if (meshManager.sceneGroup) {
+        const intersects = raycaster.intersectObjects(meshManager.sceneGroup.children, true);
+        const hitMesh = intersects.find(
+          (intersect) =>
+            intersect.object instanceof THREE.Mesh &&
+            intersect.object.type !== 'LineSegments'
+        );
+        if (hitMesh) return; // Double clicked a mesh, ignore
+      }
+
+      // Double click on empty canvas -> focus entire model
+      if (meshManager.sceneGroup) {
+        cameraManager.focusCameraTo([meshManager.sceneGroup]);
+      }
+    };
+
+    dom.addEventListener('pointerdown', handlePointerDown);
+    dom.addEventListener('click', handleNativeClick);
+    dom.addEventListener('dblclick', handleNativeDblClick);
+
+    return () => {
+      dom.removeEventListener('pointerdown', handlePointerDown);
+      dom.removeEventListener('click', handleNativeClick);
+      dom.removeEventListener('dblclick', handleNativeDblClick);
+    };
+  }, [gl, camera, meshManager, cameraManager, meshTreeStore]);
+
   // 6. Mesh click handling
   const handleMeshClick = (e: ThreeEvent<MouseEvent>): void => {
     e.stopPropagation();
+
     const uuid = e.object.uuid;
     if (meshTreeStore.nodes.has(uuid)) {
-      meshTreeStore.selectNode(uuid);
+      if (meshTreeStore.selectedId === uuid) {
+        meshTreeStore.selectNode(null);
+      } else {
+        meshTreeStore.selectNode(uuid);
+      }
     }
   };
 

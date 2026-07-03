@@ -9,7 +9,6 @@ import { useMainContext } from '../../../hooks/useMainContext';
 export const Canvas3D: React.FC<{ children?: React.ReactNode }> = observer(
   ({ children }) => {
     const { design3DManager, designManager } = useMainContext();
-    const leva = design3DManager.levaManager;
     const { meshManager } = design3DManager;
     const { viewManager } = designManager;
 
@@ -19,9 +18,7 @@ export const Canvas3D: React.FC<{ children?: React.ReactNode }> = observer(
     }, []);
 
     const contactShadowsY = meshManager.contactShadowsY;
-
-    const showContactShadows =
-      leva.contactShadowsEnabled && !!meshManager.sceneGroup;
+    const showContactShadows = !!meshManager.sceneGroup;
 
     return (
       <Canvas
@@ -38,10 +35,10 @@ export const Canvas3D: React.FC<{ children?: React.ReactNode }> = observer(
           <ContactShadows
             key={`contact-shadows-${viewManager.modelLoadKey}`}
             position={[0, contactShadowsY, 0]}
-            opacity={leva.contactShadowsOpacity}
-            scale={leva.contactShadowsScale}
-            blur={leva.contactShadowsBlur}
-            far={leva.contactShadowsFar}
+            opacity={0.57}
+            scale={171.6}
+            blur={0.5}
+            far={2.3}
             resolution={128}
             frames={10}
           />

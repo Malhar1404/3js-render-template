@@ -1,9 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Leva } from 'leva';
 import { observer } from 'mobx-react-lite';
 import { SnackbarProvider } from 'notistack';
 
-import { TITLE_BAR } from './constants';
 import { MainContextProvider } from './hooks/useMainContext';
 import { Router } from './router/Router';
 
@@ -23,7 +21,6 @@ export const App = observer(() => {
         maxSnack={3}
         anchorOrigin={{ horizontal: 'right', vertical: 'top' }}>
         <MainContextProvider>
-          <Leva collapsed titleBar={TITLE_BAR} />
           <Router />
         </MainContextProvider>
       </SnackbarProvider>

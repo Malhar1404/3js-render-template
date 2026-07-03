@@ -3,9 +3,11 @@ import { observer } from 'mobx-react-lite';
 import { useRef, useState } from 'react';
 import * as THREE from 'three';
 
+import { HARDCODED_LIGHTS } from '../../../constants';
 import { useMainContext } from '../../../hooks/useMainContext';
 import { CornerLayout, CornerLightsProps, ModelBounds } from '../../../types';
 import { CornerPointLight } from '../Light/CornerPointLight';
+
 
 const buildCornerLayout = (bounds: ModelBounds): CornerLayout => {
   const top = bounds.max.y;
@@ -46,7 +48,6 @@ const boundsKey = (bounds: ModelBounds) =>
 
 export const CornerLights = observer(({ groupRef }: CornerLightsProps) => {
   const { design3DManager } = useMainContext();
-  const leva = design3DManager.levaManager;
   const { meshManager } = design3DManager;
   const [layout, setLayout] = useState<CornerLayout | null>(null);
   const lastBoundsKeyRef = useRef('');
@@ -94,7 +95,7 @@ export const CornerLights = observer(({ groupRef }: CornerLightsProps) => {
 
   return (
     <>
-      {leva.cornerLights.map((light) => {
+      {HARDCODED_LIGHTS.map((light) => {
         const corner = layout.positions.find((item) => item.id === light.id);
         if (!corner) return null;
 
